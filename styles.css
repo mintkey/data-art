@@ -1,0 +1,94 @@
+h1,
+h2 {
+	font-family: 'Fira Sans', sans-serif;
+	font-weight: 300;
+}
+
+h3 {
+	font-family: 'Karla', sans-serif;
+	font-size: 1.8rem;
+	font-style: italic;
+	font-weight: 400;
+}
+
+body {
+	font-family: 'Karla', sans-serif;
+	font-size: 1.5rem;
+	font-weight: 400;
+	color: #374282;
+}
+
+#sidemenu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 300px;
+	height: 100vh;
+	padding-left: 20px;
+	background: #ffe478;
+}
+
+#p5canvas {
+	position: absolute;
+	top: 0%;
+	left: 22%;
+}
+
+#trackfeatures {
+	position: relative;
+	left: 70%;
+	width: 250px;
+	padding-left: 30px;
+}
+
+/* Spinner */
+
+.loader {
+  position: relative;
+  display: block;
+  width: 80px;
+  height: 80px;
+	margin: 15px auto 35px auto;
+	text-align: center;
+  border: 10px solid rgba(0, 0, 0, .3);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+	z-index: 10;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+
+/* Modal styling */
+
+.modal-content {
+  border-radius: 0px;
+  box-shadow: 0 0 20px 8px rgba(0, 0, 0, 0.7);
+}
+
+.modal-backdrop.show {
+  opacity: 0.75;
+}
+
+.loader-txt {
+  p {
+    font-size: 13px;
+    color: #666;
+    small {
+      font-size: 11.5px;
+      color: #999;
+    }
+  }
+}

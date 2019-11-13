@@ -39,10 +39,14 @@ function draw() {
   // clear canvas
   clear();
   background('#f5f5f5');
+
   // if the app has not yet loaded (no Spotify data) then don't run P5 code
   if (app.loaded == false) {
     return;
   }
+
+  // display the color based on the color variable
+  coloring();
 
   if (app.viz.songshape == "circle") {
     calculateWave();
@@ -51,8 +55,6 @@ function draw() {
     calculateWave();
     renderWaveSquares();
   }
-
-  // display the color based on the color variable
 }
 
 function calculateWave() {
@@ -73,7 +75,7 @@ function calculateWave() {
 
 function renderWaveCircles() {
   noStroke();
-	fill('#ffd54f');
+	//fill('#ffd54f');
   // draw the wave with an ellipse at each point
   for (let x = 0; x < yvalues.length; x++) {
     var diameter = 15 + sin(theta) * maxDiameter;
@@ -90,6 +92,7 @@ function renderWaveSquares() {
 }
 
 function coloring() {
+  /*
   if (app.viz.color == "energy") {
     fill(114, 224, 142);
   } else if (app.viz.color == "danceability") {
@@ -97,4 +100,10 @@ function coloring() {
   } else if (app.viz.color == "valence") {
     fill(255, 105, 125);
   }
+  */
+  var r = map(app.viz.color, 0,1,0,0);
+  var g = map(app.viz.color, 0,1,191,255);
+  var b = map(app.viz.color, 0,1,255,0);
+  fill(r,g,b);
+
 }

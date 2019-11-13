@@ -71,7 +71,7 @@ app.viewTrackInfo = function() {
   var html = "<h2>Track</h2>";
   html += "<h3>Track Title:</h3> " + app.track.info.name + "<br>";
   html += "<h3>Album:</h3> " + app.track.info.album.name + "<br>";
-  html += "<img src='" + app.track.info.album.images[2].url + "'>";
+  html += "<img src='" + app.track.info.album.images[1].url + "' width='150' height='150'>";
   $("#trackinfo").html(html);
 };
 

@@ -20,14 +20,15 @@ body {
   font-size: 1.5rem;
   font-weight: 400;
   color: #e3f2fd;
-	background: #000029;
+	/*background: #0f141f;*/
+	background: #021129;
 }
 
 hr {
 	width: 240px;
 	margin-left: 10px;
 	border-width: 2px;
-	border-color: #000029;
+	border-color: #021129;
 }
 
 #sidemenu {
@@ -37,7 +38,7 @@ hr {
   width: 300px;
   height: 100vh;
   padding-left: 20px;
-  background: #39497e;
+  background: #1d62d1;
 	z-index: 3;
 }
 

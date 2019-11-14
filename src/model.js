@@ -68,9 +68,9 @@ app.viewTrackInfo = function() {
   }
 
   //generate html and display
-  var html = "<h2>Track</h2>";
-  html += "<h3>Track Title:</h3> " + app.track.info.name + "<br>";
-  html += "<h3>Album:</h3> " + app.track.info.album.name + "<br>";
+  var html = "<h3>Tracks</h3>";
+  html += "<h4>Track Title:</h4> " + app.track.info.name + "<br>";
+  html += "<h4>Album:</h4> " + app.track.info.album.name + "<br><br>";
   html += "<img src='" + app.track.info.album.images[1].url + "' width='150' height='150'>";
   $("#trackinfo").html(html);
 };
@@ -81,7 +81,7 @@ app.viewTrackFeatures = function() {
   }
 
   //generate html and display
-  var html = "<h4>Track Features</h4>";
+  var html = "<h3>Track Features</h3>";
   $.each(app.track.features, function(key, value) {
     html += "<b>" + key + "</b>: " + value + "<br>";
   });

@@ -45,16 +45,9 @@ function draw() {
     return;
   }
 
-  // display the color based on the color variable
   coloring();
-
-  if (app.viz.songshape == "circle") {
-    calculateWave();
-    renderWaveCircles();
-  } else if (app.viz.songshape == "square") {
-    calculateWave();
-    renderWaveSquares();
-  }
+  calculateWave();
+  renderWave();
 }
 
 function calculateWave() {
@@ -73,37 +66,26 @@ function calculateWave() {
   }
 }
 
-function renderWaveCircles() {
+function renderWave() {
   noStroke();
 	//fill('#ffd54f');
   // draw the wave with an ellipse at each point
   for (let x = 0; x < yvalues.length; x++) {
     var diameter = 15 + sin(theta) * maxDiameter;
-    ellipse(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
-  }
-}
-
-function renderWaveSquares() {
-  // draw the wave with a rectangle at each point
-  for (let x = 0; x < yvalues.length; x++) {
-    var diameter = 15 + sin(theta) * maxDiameter;
-    rect(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
+    if (app.viz.songshape == "circle") {
+      ellipse(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
+    }
+    else if (app.viz.songshape == "square") {
+      rect(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
+    }
   }
 }
 
 function coloring() {
-  /*
-  if (app.viz.color == "energy") {
-    fill(114, 224, 142);
-  } else if (app.viz.color == "danceability") {
-    fill(174, 235, 226);
-  } else if (app.viz.color == "valence") {
-    fill(255, 105, 125);
-  }
-  */
   var r = map(app.viz.color, 0,1,0,0);
   var g = map(app.viz.color, 0,1,191,255);
   var b = map(app.viz.color, 0,1,255,0);
+  
   fill(r,g,b);
 
 }

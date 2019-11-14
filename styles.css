@@ -1,17 +1,14 @@
 h1,
-h2 {
-  font-family: 'Fira Sans', sans-serif;
-  font-weight: 300;
-}
-
-h1 {
-	font-size: 2.4rem;
-}
-
+h2,
 h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+h4,
+h5 {
   font-family: 'Karla', sans-serif;
   font-size: 1.8rem;
-  font-style: italic;
   font-weight: 400;
 }
 
@@ -19,16 +16,15 @@ body {
   font-family: 'Karla', sans-serif;
   font-size: 1.5rem;
   font-weight: 400;
-  color: #e3f2fd;
-	/*background: #0f141f;*/
-	background: #021129;
+  color: #edf1f2;
+  background: #dae3e5;
 }
 
 hr {
 	width: 240px;
 	margin-left: 10px;
-	border-width: 2px;
-	border-color: #021129;
+	border-width: 0.75px;
+	border-color: #dae3e5;
 }
 
 #sidemenu {
@@ -38,7 +34,7 @@ hr {
   width: 300px;
   height: 100vh;
   padding-left: 20px;
-  background: #1d62d1;
+  background: #04080f;
 	z-index: 3;
 }
 

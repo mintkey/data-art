@@ -5,25 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles2.css">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
+    
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:700|Karla:400,400i&display=swap" rel="stylesheet">
 
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!--CUSTOM CODE -->
+    <script src="src/model.js"></script>
 
     <!-- p5.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js" crossorigin="anonymous"></script>
@@ -31,46 +26,19 @@
     <script src="src/sketch.js"></script>
 
     <script src="src/spotify-web-api.js"></script>
-    <script src="src/model.js"></script>
 
-    <title>Test</title>
+    <title>SoundViz</title>
   </head>
 
   <body>
 
-      <!-- Side Menu -->
-      <div id="sidemenu">
-          <div id="trackinfo">No Track Loaded</div>
-          <hr>
-
-          <div class="form-group">
-            <h3>Variables</h3>
-            <h4 for="form_songshape">Song Shape: </h4>
-            <select class="custom-select custom-select-sm" id="form_songshape">
-              <option value="circle" selected>Circle</option>
-              <option value="square">Square</option>
-            </select>
-
-            <br>
-
-            <h4 for="form_color">Color: </h4>
-            <select class="custom-select custom-select-sm" id="form_color">
-              <option value="energy" selected>Energy</option>
-              <option value="danceability">Danceability</option>
-              <option value="valence">Valence</option>
-            </select>
-          </div>
-      </div>
-
-
-      <!-- P5 Canvas loaded into this div -->
-      <div id="p5canvas">
-      </div>
-
-      <!-- Track Features -->
-      <div id="trackfeatures">
-      </div>
-
+     <!-- NAVIGATION BAR -->
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+          <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          <span>  SoundViz</span>
+        </a>
+      </nav>
 
       <!-- Modal -->
       <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
@@ -86,9 +54,79 @@
         </div>
       </div>
 
+      <!--TABS -->
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-selectdata-tab" data-toggle="tab" href="#nav-selectdata" role="tab" aria-controls="nav-selectdata" aria-selected="true">Step 1: Select Data</a>
+          <a class="nav-item nav-link" id="nav-design-tab" data-toggle="tab" href="#nav-design" role="tab" aria-controls="nav-design" aria-selected="false">Step 2: Design</a>
+          <a class="nav-item nav-link" id="nav-publish-tab" data-toggle="tab" href="#nav-publish" role="tab" aria-controls="nav-publish" aria-selected="false">Step 3: Publish</a>
+        </div>
+      </nav>
 
-      <!--call to initialize the app code -->
-      <script>app.initialize();</script>
+
+      <!--TAB CONTENT -->
+      <div class="tab-content" id="nav-tabContent">
+        
+        <!--STEP 1: SELECT DATA -->
+        <div class="tab-pane fade show active" id="nav-selectdata" role="tabpanel" aria-labelledby="nav-selectdata-tab">
+
+            TBD
+
+        </div>
+
+        <!--STEP 2: DESIGN -->
+        <div class="tab-pane fade" id="nav-design" role="tabpanel" aria-labelledby="nav-design-tab">
+            <div class="row">
+
+              <!-- Side Menu -->
+              <div id="sidemenu" class="col-2">
+                  <div id="trackinfo">No Track Loaded</div>
+                  <hr>
+
+                  <div class="form-group">
+                    <h3>Variables</h3>
+                    <h4 for="form_songshape">Song Shape: </h4>
+                    <select class="custom-select custom-select-sm" id="form_songshape">
+                      <option value="circle" selected>Circle</option>
+                      <option value="square">Square</option>
+                    </select>
+
+                    <br>
+
+                    <h4 for="form_color">Color: </h4>
+                    <select class="custom-select custom-select-sm" id="form_color">
+                      <option value="energy" selected>Energy</option>
+                      <option value="danceability">Danceability</option>
+                      <option value="valence">Valence</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div id="p5canvas" class="col">
+              </div>
+
+              <!-- Track Features-->
+              <div id="trackfeatures" class="col">
+              </div>
+            </div>
+        </div>
+
+        <!--STEP 3: PUBLISH -->
+        <div class="tab-pane fade" id="nav-publish" role="tabpanel" aria-labelledby="nav-publish-tab">
+          PUBLISH
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!--call to initialize the app code -->
+    <script>app.initialize();</script>
   </body>
 
 </html>

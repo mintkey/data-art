@@ -24,15 +24,14 @@ var spotifyVerifyURL_local =
 //--------- APP CONTROLLER -------
 app.initialize = function() {
   //display the loading screen
-  $("#loadMe").modal({
-    backdrop: "static", //remove ability to close modal with click
-    keyboard: false, //remove option to close with keyboard
-    show: true //Display loader!
-  });
+  //app.initLoading();
 
   //load spotify API
   app.initSpotify(function() {
     console.log("APP: Spotify API initialized...");
+
+
+
 
     //load track info
     app.getTrack("5SkRLpaGtvYPhw02vZhQQ9", function() {
@@ -58,6 +57,9 @@ app.initialize = function() {
       //update event listeners
       app.setFormListeners();
     });
+    
+
+
   }); //end initSpotify()
 };
 
@@ -145,7 +147,7 @@ app.handleError = function(err) {
   //console.error(err);
 };
 
-app.getTracks = function(searchterm) {
+app.searchTracks = function(searchterm) {
   if (searchterm == null) {
     console.log("APP: Cannot get tracks. No search term passed as a parameter");
     return null;
@@ -185,3 +187,11 @@ app.getAudioFeaturesForTrack = function(id, callback) {
     }
   );
 };
+
+app.initLoading = function(){
+  $("#loadMe").modal({
+    backdrop: "static", //remove ability to close modal with click
+    keyboard: false, //remove option to close with keyboard
+    show: true //Display loader!
+  });
+}

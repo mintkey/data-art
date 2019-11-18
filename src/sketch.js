@@ -19,7 +19,8 @@ function setup() {
 	// valence dependent shape fluctuation
 	// - higher valence means really small to really large, lower valence means
 	// slightly small to slightly large
-	$.each(app.track.features, function(key, value) {
+  /*
+	$.each(model.track.features, function(key, value) {
     if (key == "valence") {
       maxDiameter += value;
     }
@@ -28,11 +29,12 @@ function setup() {
   dx = (TWO_PI / period) * xspacing;
   yvalues = new Array(floor(w / xspacing));
 	// time signature-dependent period
-  $.each(app.track.features, function(key, value) {
+  $.each(model.track.features, function(key, value) {
     if (key == "time_signature") {
       period *= value;
     }
   });
+  */
 }
 
 function draw() {
@@ -52,7 +54,7 @@ function draw() {
 
 function calculateWave() {
   // tempo-dependent angular velocity
-  $.each(app.track.features, function(key, value) {
+  $.each(model.track.features, function(key, value) {
     if (key == "tempo") {
       theta += 0.0005 * value;
     }

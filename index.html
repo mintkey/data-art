@@ -19,6 +19,7 @@
 
     <!--CUSTOM CODE -->
     <script src="src/model.js"></script>
+    <script src="src/app.js"></script>
 
     <!-- p5.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js" crossorigin="anonymous"></script>
@@ -48,6 +49,9 @@
               <div class="loader"></div>
               <div clas="loader-txt">
                 <p>Loading Spotify Track Data....</p>
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
               </div>
             </div>
           </div>
@@ -70,7 +74,11 @@
         <!--STEP 1: SELECT DATA -->
         <div class="tab-pane fade show active" id="nav-selectdata" role="tabpanel" aria-labelledby="nav-selectdata-tab">
 
-            TBD
+            <input type="text" id="tracksearch-field"/>
+            <a href="#" role="button" id="tracksearch-btn" class="btn btn-info">Search</a>
+            <hr>
+            <div id="selectdata-list">
+            </div>
 
         </div>
 
@@ -80,8 +88,6 @@
 
               <!-- Side Menu -->
               <div id="sidemenu" class="col-2">
-                  <div id="trackinfo">No Track Loaded</div>
-                  <hr>
 
                   <div class="form-group">
                     <h3>Variables</h3>
@@ -106,7 +112,7 @@
               </div>
 
               <!-- Track Features-->
-              <div id="trackfeatures" class="col">
+              <div id="tracksinfo" class="col">
               </div>
             </div>
         </div>

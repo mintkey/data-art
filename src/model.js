@@ -1,122 +1,33 @@
-/* TODO:
-- save token as cookie and load as well
-- implement error handling for when token not working
-
+/* 
 Spotify API: https://github.com/jmperez/spotify-web-api-js
 Documenttion: https://doxdox.org/jmperez/spotify-web-api-js
 */
 
 var spotifyApi;
-var app = {
+var datamodel = {
   spotifyToken: null,
-  loaded: false,
   track: {},
-  viz: {
-    songshape: "circle"
-  }
+  tracks: [],
+  searchData: null
 };
+var tempBatchCount = -1;
 
 //URLs for authenticating and getting token remotely
 var spotifyVerifyURL = "http://thenewten.org/sp/verify.php";
 var spotifyVerifyURL_local =
   "https://cors-anywhere.herokuapp.com/http://thenewten.org/sp/verify.php";
 
-//--------- APP CONTROLLER -------
-app.initialize = function() {
-  //display the loading screen
-  //app.initLoading();
-
-  //load spotify API
-  app.initSpotify(function() {
-    console.log("APP: Spotify API initialized...");
-
-
-
-
-    //load track info
-    app.getTrack("5SkRLpaGtvYPhw02vZhQQ9", function() {
-      console.log("APP: Track info loaded...");
-
-      //update the display of track info
-      app.viewTrackInfo();
-    });
-
-    //load track audio features
-    app.getAudioFeaturesForTrack("5SkRLpaGtvYPhw02vZhQQ9", function() {
-      console.log("APP: Track audio features loaded...");
-
-      //flag the app as loaded
-      app.loaded = true; //this enables the P5 code...
-
-      //remove modal window...
-      $("#loadMe").modal("hide");
-
-      //update the display of track features
-      app.viewTrackFeatures();
-
-      //update event listeners
-      app.setFormListeners();
-    });
-    
-
-
-  }); //end initSpotify()
-};
-
-//--------- APP UI ---------------
-app.viewTrackInfo = function() {
-  if (app.track.info == null) {
-    console.log("APP: Cannot load track data. Null object.");
-  }
-
-  //generate html and display
-  var html = "<h3>Tracks</h3>";
-  html += "<h4>Track Title:</h4> " + app.track.info.name + "<br>";
-  html += "<h4>Album:</h4> " + app.track.info.album.name + "<br><br>";
-  html += "<img src='" + app.track.info.album.images[1].url + "' width='150' height='150'>";
-  $("#trackinfo").html(html);
-};
-
-app.viewTrackFeatures = function() {
-  if (app.track.features == null) {
-    console.log("APP: Cannot load track data. Null object.");
-  }
-
-  //generate html and display
-  var html = "<h3>Track Features</h3>";
-  $.each(app.track.features, function(key, value) {
-    html += "<b>" + key + "</b>: " + value + "<br>";
-  });
-
-  $("#trackfeatures").html(html);
-};
-
-app.setFormListeners = function() {
-  $("#form_songshape").on("change", function() {
-    var selected = $(this)
-      .find("option:selected")
-      .attr("value");
-    console.log("APP: Song shape changed to: " + selected);
-    app.viz.songshape = selected;
-  });
-
-  $("#form_color").on("change", function() {
-    var selected = $(this)
-      .find("option:selected")
-      .attr("value");
-    console.log("APP: Color changed to: " + selected);
-    app.viz.color = app.track.features[selected];
-  });
-};
 
 //--------- SPOTIFY --------------
-app.initSpotify = function(callback) {
+
+
+datamodel.initSpotify = function(callback) {
   //instantiate the Spotify API wrapper
   spotifyApi = new SpotifyWebApi();
 
   //check to see if there's an existing token
-  if (app.getToken() != null) {
-    console.log("APP: Token already exists...");
+  if (datamodel.getToken() != null) {
+    console.log("MODEL: Token already exists...");
     //return;
   }
 
@@ -126,72 +37,97 @@ app.initSpotify = function(callback) {
     type: "GET",
     data: {}
   }).done(function(data) {
+
+    //parse the data (token) to validate access to spotify
     var tokenObj = JSON.parse(data);
-    //console.log("Token Received: " + tokenObj.access_token)
-    app.saveToken(tokenObj.access_token);
-    spotifyApi.setAccessToken(app.getToken());
+    datamodel.saveTheToken(tokenObj.access_token);
+    spotifyApi.setAccessToken(datamodel.getToken());
     callback();
   });
 };
 
-app.saveToken = function(token) {
-  app.spotifyToken = token;
+datamodel.saveTheToken = function(token) {
+  datamodel.spotifyToken = token;
 };
 
-app.getToken = function() {
-  return app.spotifyToken;
+datamodel.getToken = function() {
+  return datamodel.spotifyToken;
 };
 
-app.handleError = function(err) {
-  console.log("APP: Error when making a call...", err);
+datamodel.handleError = function(err) {
+  console.log("MODEL: Error when making a call...", err);
   //console.error(err);
 };
 
-app.searchTracks = function(searchterm) {
+datamodel.searchTracks = function(searchterm, callback) {
   if (searchterm == null) {
-    console.log("APP: Cannot get tracks. No search term passed as a parameter");
+    console.log("MODEL: Cannot get tracks. No search term passed as a parameter");
     return null;
   }
   spotifyApi.searchTracks(searchterm).then(
     function(data) {
-      console.log('Search by "' + searchterm + '"', data);
+      console.log('MODEL: Search by "' + searchterm + '"', data);
+      datamodel.searchData = data;
+      datamodel.selectTracks();
+      callback();
     },
     function(err) {
-      app.handleError(err);
+      datamodel.handleError(err);
     }
   );
 };
 
-app.getTrack = function(id, callback) {
+/*
+Note: In the future this is where we can specify which tracks to "choose"
+Right now it's choosing all returned (20 or less)
+*/
+datamodel.selectTracks = function(selections){
+  //hard-coded to select the first five
+  datamodel.tracks = datamodel.searchData.tracks.items;
+
+}
+
+datamodel.getAudioFeaturesBatch = function(callbackdone){
+  //set the number of calls to make (e.g., 20)
+  tempBatchCount = datamodel.tracks.length;
+
+  //loop through all of the tracks to grab their audio features
+  for(var t=0; t<datamodel.tracks.length; t++){
+    datamodel.getAudioFeaturesForTrack(datamodel.tracks[t].id, t, function(){
+        tempBatchCount--;
+        if(tempBatchCount == 0){
+          console.log("MODEL: Batch audio feature complete. Count: " + tempBatchCount);
+          callbackdone();
+        }
+    });
+  }
+}
+
+/*
+DEPRECATED - NO LONGER NEEDED
+datamodel.getTrack = function(id, callback) {
   spotifyApi.getTrack(id).then(
     function(data) {
-      console.log("Getting audio info", data);
-      app.track.info = data; //save data for track to global app variable
+      console.log("MODEL: Getting audio info", data);
+      datamodel.track.info = data; //save data for track to global app variable
       callback();
     },
     function(err) {
-      app.handleError(err);
+      datamodel.handleError(err);
     }
   );
 };
+*/
 
-app.getAudioFeaturesForTrack = function(id, callback) {
+datamodel.getAudioFeaturesForTrack = function(id, trackindex, callback) {
   spotifyApi.getAudioFeaturesForTrack(id).then(
     function(data) {
-      console.log("Getting audio features", data);
-      app.track.features = data; //save data for track to global app variable
+      console.log("ID["+id+"] Getting audio features", data);
+      datamodel.tracks[trackindex].features = data;
       callback();
     },
     function(err) {
-      app.handleError(err);
+      datamodel.handleError(err);
     }
   );
 };
-
-app.initLoading = function(){
-  $("#loadMe").modal({
-    backdrop: "static", //remove ability to close modal with click
-    keyboard: false, //remove option to close with keyboard
-    show: true //Display loader!
-  });
-}

@@ -84,7 +84,7 @@ Right now it's choosing all returned (20 or less)
 datamodel.selectTracks = function(selections){
   //hard-coded to select the first five
   datamodel.tracks = datamodel.searchData.tracks.items;
-
+  model.track = datamodel.tracks[1];
 }
 
 datamodel.getAudioFeaturesBatch = function(callbackdone){

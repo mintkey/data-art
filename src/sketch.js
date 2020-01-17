@@ -7,6 +7,7 @@ let amplitude = 75.0; // height of wave
 let period = 200.0; // number of pixels per wave
 let dx; // value for incrementing x
 let yvalues; // array to store height values for the wave
+var isSetup = false;
 
 function setup() {
   var canvas = createCanvas(700, 600);
@@ -16,40 +17,43 @@ function setup() {
   colorMode(RGB, 255);
   rectMode(CENTER);
 
-	// valence dependent shape fluctuation
-	// - higher valence means really small to really large, lower valence means
-	// slightly small to slightly large
-  /*
-	$.each(model.track.features, function(key, value) {
-    if (key == "valence") {
-      maxDiameter += value;
-    }
-  });
-  w = width + 20;
-  dx = (TWO_PI / period) * xspacing;
-  yvalues = new Array(floor(w / xspacing));
-	// time signature-dependent period
-  $.each(model.track.features, function(key, value) {
-    if (key == "time_signature") {
-      period *= value;
-    }
-  });
-  */
 }
 
 function draw() {
   // clear canvas
   clear();
-  background('#f5f5f5');
+  background('#000000');
 
   // if the app has not yet loaded (no Spotify data) then don't run P5 code
   if (app.loaded == false) {
     return;
   }
 
+  // valence dependent shape fluctuation
+  // - higher valence means really small to really large, lower valence means
+  // slightly small to slightly large
+  isSetup = true;
+  if(model.track == null){
+    $.each(model.track.features, function(key, value) {
+      if (key == "valence") {
+        maxDiameter += value;
+      }
+    });
+    w = width + 20;
+    dx = (TWO_PI / period) * xspacing;
+    yvalues = new Array(floor(w / xspacing));
+    // time signature-dependent period
+    $.each(model.track.features, function(key, value) {
+      if (key == "time_signature") {
+        period *= value;
+      }
+    });
+  }
+
   coloring();
   calculateWave();
   renderWave();
+  
 }
 
 function calculateWave() {

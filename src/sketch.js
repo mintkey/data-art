@@ -33,8 +33,8 @@ function draw() {
   // - higher valence means really small to really large, lower valence means
   // slightly small to slightly large
   isSetup = true;
-  if(model.track == null){
-    $.each(model.track.features, function(key, value) {
+  if (model.track == null) {
+    $.each(model.track.features, function (key, value) {
       if (key == "valence") {
         maxDiameter += value;
       }
@@ -43,7 +43,7 @@ function draw() {
     dx = (TWO_PI / period) * xspacing;
     yvalues = new Array(floor(w / xspacing));
     // time signature-dependent period
-    $.each(model.track.features, function(key, value) {
+    $.each(model.track.features, function (key, value) {
       if (key == "time_signature") {
         period *= value;
       }
@@ -53,12 +53,12 @@ function draw() {
   coloring();
   calculateWave();
   renderWave();
-  
+
 }
 
 function calculateWave() {
   // tempo-dependent angular velocity
-  $.each(model.track.features, function(key, value) {
+  $.each(model.track.features, function (key, value) {
     if (key == "tempo") {
       theta += 0.0005 * value;
     }
@@ -74,24 +74,23 @@ function calculateWave() {
 
 function renderWave() {
   noStroke();
-	//fill('#ffd54f');
+  //fill('#ffd54f');
   // draw the wave with an ellipse at each point
   for (let x = 0; x < yvalues.length; x++) {
     var diameter = 15 + sin(theta) * maxDiameter;
     if (app.viz.songshape == "circle") {
       ellipse(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
-    }
-    else if (app.viz.songshape == "square") {
+    } else if (app.viz.songshape == "square") {
       rect(x * xspacing, height / 2 + yvalues[x], diameter, diameter);
     }
   }
 }
 
 function coloring() {
-  var r = map(app.viz.color, 0,1,0,0);
-  var g = map(app.viz.color, 0,1,191,255);
-  var b = map(app.viz.color, 0,1,255,0);
-  
-  fill(r,g,b);
+  var r = map(app.viz.color, 0, 1, 0, 0);
+  var g = map(app.viz.color, 0, 1, 191, 255);
+  var b = map(app.viz.color, 0, 1, 255, 0);
+
+  fill(r, g, b);
 
 }

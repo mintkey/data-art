@@ -21,13 +21,13 @@ var spotifyVerifyURL_local =
 //--------- SPOTIFY --------------
 
 
-datamodel.initSpotify = function(callback) {
+datamodel.initSpotify = function (callback) {
   //instantiate the Spotify API wrapper
   spotifyApi = new SpotifyWebApi();
 
   //check to see if there's an existing token
   if (datamodel.getToken() != null) {
-    console.log("MODEL: Token already exists...");
+    console.log("MODEL: Token already exists");
     //return;
   }
 
@@ -36,7 +36,7 @@ datamodel.initSpotify = function(callback) {
     url: spotifyVerifyURL_local,
     type: "GET",
     data: {}
-  }).done(function(data) {
+  }).done(function (data) {
 
     //parse the data (token) to validate access to spotify
     var tokenObj = JSON.parse(data);
@@ -46,32 +46,32 @@ datamodel.initSpotify = function(callback) {
   });
 };
 
-datamodel.saveTheToken = function(token) {
+datamodel.saveTheToken = function (token) {
   datamodel.spotifyToken = token;
 };
 
-datamodel.getToken = function() {
+datamodel.getToken = function () {
   return datamodel.spotifyToken;
 };
 
-datamodel.handleError = function(err) {
-  console.log("MODEL: Error when making a call...", err);
+datamodel.handleError = function (err) {
+  console.log("MODEL: Error when making a call", err);
   //console.error(err);
 };
 
-datamodel.searchTracks = function(searchterm, callback) {
+datamodel.searchTracks = function (searchterm, callback) {
   if (searchterm == null) {
     console.log("MODEL: Cannot get tracks. No search term passed as a parameter");
     return null;
   }
   spotifyApi.searchTracks(searchterm).then(
-    function(data) {
+    function (data) {
       console.log('MODEL: Search by "' + searchterm + '"', data);
       datamodel.searchData = data;
       datamodel.selectTracks();
       callback();
     },
-    function(err) {
+    function (err) {
       datamodel.handleError(err);
     }
   );
@@ -81,24 +81,24 @@ datamodel.searchTracks = function(searchterm, callback) {
 Note: In the future this is where we can specify which tracks to "choose"
 Right now it's choosing all returned (20 or less)
 */
-datamodel.selectTracks = function(selections){
+datamodel.selectTracks = function (selections) {
   //hard-coded to select the first five
   datamodel.tracks = datamodel.searchData.tracks.items;
-  model.track = datamodel.tracks[1];
+  model.track = datamodel.tracks[];
 }
 
-datamodel.getAudioFeaturesBatch = function(callbackdone){
+datamodel.getAudioFeaturesBatch = function (callbackdone) {
   //set the number of calls to make (e.g., 20)
   tempBatchCount = datamodel.tracks.length;
 
   //loop through all of the tracks to grab their audio features
-  for(var t=0; t<datamodel.tracks.length; t++){
-    datamodel.getAudioFeaturesForTrack(datamodel.tracks[t].id, t, function(){
-        tempBatchCount--;
-        if(tempBatchCount == 0){
-          console.log("MODEL: Batch audio feature complete. Count: " + tempBatchCount);
-          callbackdone();
-        }
+  for (var t = 0; t < datamodel.tracks.length; t++) {
+    datamodel.getAudioFeaturesForTrack(datamodel.tracks[t].id, t, function () {
+      tempBatchCount--;
+      if (tempBatchCount == 0) {
+        console.log("MODEL: Batch audio feature complete. Count: " + tempBatchCount);
+        callbackdone();
+      }
     });
   }
 }
@@ -119,14 +119,14 @@ datamodel.getTrack = function(id, callback) {
 };
 */
 
-datamodel.getAudioFeaturesForTrack = function(id, trackindex, callback) {
+datamodel.getAudioFeaturesForTrack = function (id, trackindex, callback) {
   spotifyApi.getAudioFeaturesForTrack(id).then(
-    function(data) {
-      console.log("ID["+id+"] Getting audio features", data);
+    function (data) {
+      console.log("ID[" + id + "] Getting audio features", data);
       datamodel.tracks[trackindex].features = data;
       callback();
     },
-    function(err) {
+    function (err) {
       datamodel.handleError(err);
     }
   );

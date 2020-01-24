@@ -1,6 +1,3 @@
-/*
-
-*/
 var app = {
   loaded: false,
   currentView: "data",
@@ -11,7 +8,7 @@ var app = {
 
 
 //--------- APP CONTROLLER -------
-app.initialize = function() {
+app.initialize = function () {
   //display the loading screen
   app.initLoading();
 
@@ -20,8 +17,8 @@ app.initialize = function() {
   app.setupTabListeners();
 
   //load spotify API
-  datamodel.initSpotify(function(){
-    console.log("APP: Spotify loaded...");
+  datamodel.initSpotify(function () {
+    console.log("APP: Spotify loaded");
 
     //trigger off the loading modal
     app.hideLoading();
@@ -46,22 +43,22 @@ app.viewTrackInfo = function() {
   $("#trackinfo").html(html);
 };
 */
-app.viewTracksInfo = function() {
+app.viewTracksInfo = function () {
   if (datamodel.tracks.length < 1) {
-    console.log("APP: Cannot load tracks info.");
+    console.log("APP: Cannot load tracks info");
     return;
   }
 
   //generate html and display
-  var html = "<h3># Of Tracks: "+datamodel.tracks.length+"</h3>";
+  var html = "<h3># Of Tracks: " + datamodel.tracks.length + "</h3>";
   html += '<ul class="list-unstyled">';
-  for(var y=0; y<datamodel.tracks.length; y++){
+  for (var y = 0; y < datamodel.tracks.length; y++) {
     html += '<li class="media">';
-    html += '<img src="'+datamodel.tracks[y].album.images[1].url+'" class="mr-3" height="64px" width="64px">';
+    html += '<img src="' + datamodel.tracks[y].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
     html += '<div class="media-body">';
-    html += '<h5 class="mt-0 mb-1">'+datamodel.tracks[y].name+'</h5>';
-    //html += 'Album: ' +datamodel.tracks[y].album.name + ' | ';
-    html += 'By: ' + datamodel.tracks[y].artists[0].name;
+    html += '<h5 class="mt-0 mb-1">' + datamodel.tracks[y].name + '</h5>';
+    //html += 'Album: ' + datamodel.tracks[y].album.name;
+    html += datamodel.tracks[y].artists[0].name;
     html += '</div>';
     html += '</li>';
   }
@@ -97,41 +94,41 @@ app.viewTracksInfo = function() {
 
 */
 
-app.viewTrackFeatures = function() {
+app.viewTrackFeatures = function () {
   if (app.track.features == null) {
-    console.log("APP: Cannot load track data. Null object.");
+    console.log("APP: Cannot load track data. Null object");
   }
 
   //generate html and display
   var html = "<h3>Track Features</h3>";
-  $.each(app.track.features, function(key, value) {
+  $.each(app.track.features, function (key, value) {
     html += "<b>" + key + "</b>: " + value + "<br>";
   });
 
   $("#trackfeatures").html(html);
 };
 
-app.setFormListeners = function() {
-  
+app.setFormListeners = function () {
+
   //----- Step 1: Selecting Data Elements
-  $("#tracksearch-btn").click(function(){
+  $("#tracksearch-btn").click(function () {
     var searchText = $("#tracksearch-field").val();
     console.log("Searching for: " + searchText);
-    datamodel.searchTracks(searchText, function(data){
+    datamodel.searchTracks(searchText, function (data) {
       console.log("APP: data", datamodel.tracks);
       app.displayTracksData();
     });
   });
 
   //----- Step 2: Design Form Elements
-  $("#form_songshape").on("change", function() {
+  $("#form_songshape").on("change", function () {
     var selected = $(this)
       .find("option:selected")
       .attr("value");
     console.log("APP: Song shape changed to: " + selected);
     app.viz.songshape = selected;
   });
-  $("#form_color").on("change", function() {
+  $("#form_color").on("change", function () {
     var selected = $(this)
       .find("option:selected")
       .attr("value");
@@ -140,8 +137,8 @@ app.setFormListeners = function() {
   });
 };
 
-app.setupTabListeners = function(){
-  console.log("APP: Setting up listeners for tabs...");
+app.setupTabListeners = function () {
+  console.log("APP: Setting up listeners for tabs");
 
   $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 
@@ -152,14 +149,14 @@ app.setupTabListeners = function(){
     //trigger loading
     console.log("APP: Tab switch called: " + currentTarget.id);
 
-    switch(currentTarget.id){
-      case "nav-selectdata-tab":
+    switch (currentTarget.id) {
+      case "nav-selecttracks-tab":
         app.currentView = "data";
         app.hideLoading();
         break;
       case "nav-design-tab":
         app.currentView = "design";
-        if(app.viewDesignTab() == false){
+        if (app.viewDesignTab() == false) {
           return false;
         }
         break;
@@ -174,7 +171,7 @@ app.setupTabListeners = function(){
   });
 }
 
-app.initLoading = function(){
+app.initLoading = function () {
   $("#loadMe").modal({
     backdrop: "static", //remove ability to close modal with click
     keyboard: false, //remove option to close with keyboard
@@ -182,33 +179,33 @@ app.initLoading = function(){
   });
 }
 
-app.hideLoading = function(){
+app.hideLoading = function () {
   $("#loadMe").modal("hide");
 }
-app.showLoading = function(){
+app.showLoading = function () {
   $("#loadMe").modal("show");
 
   //set a timer
   var myModal = $(this);
   clearTimeout(myModal.data('hideInterval'));
-  myModal.data('hideInterval', setTimeout(function(){
-      myModal.modal('hide');
+  myModal.data('hideInterval', setTimeout(function () {
+    myModal.modal('hide');
   }, 3000));
 }
 
 //loops through the targeted tracks and displays their info
-app.displayTracksData = function(){
+app.displayTracksData = function () {
   var html = '<ul class="list-group">';
-  for(var i=0; i<datamodel.tracks.length; i++){
+  for (var i = 0; i < datamodel.tracks.length; i++) {
     html += '<li class="list-group-item">'
-    html += datamodel.tracks[i].name;  //display track info
-    html += " By: " + datamodel.tracks[i].artists[0].name
+    html += datamodel.tracks[i].name; //display track info
+    html += " - " + datamodel.tracks[i].artists[0].name
     html += '</li>';
   }
   html += '</ul>';
 
   //display HTML
-  $("#selectdata-list").html(html);
+  $("#selecttracks-list").html(html);
 
   /*
   <div class="card-columns">
@@ -278,17 +275,17 @@ app.displayTracksData = function(){
   */
 }
 
-app.viewDesignTab = function(){
+app.viewDesignTab = function () {
   console.log("APP: viewDesignTab() called");
 
-  //check to see if there is any data there....
-  if(datamodel.tracks.length < 1){
-    alert("ERROR: You must first search for tracks you want to work with...");
+  //check to see if there is any data there
+  if (datamodel.tracks.length < 1) {
+    alert("ERROR: You must first search for tracks you want to work with");
     return false;
   }
 
   //go grab the audio features
-  datamodel.getAudioFeaturesBatch(function(){
+  datamodel.getAudioFeaturesBatch(function () {
 
     //display the tracks data
     app.viewTracksInfo();

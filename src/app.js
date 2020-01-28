@@ -43,10 +43,10 @@ app.displayTracklist = function () {
   }
   html += '</ul>';
 
-  $("#track-list").html(html);
+  $("#tracklist").html(html);
 };
 
-/*
+
 app.viewTrackFeatures = function () {
   if (app.track.features == null) {
     console.log("APP: Cannot load track features. Null object");
@@ -59,10 +59,8 @@ app.viewTrackFeatures = function () {
 
   $("#trackfeatures").html(html);
 };
-*/
 
 app.setFormListeners = function () {
-
   // Searches for and displays tracks from Spotify API that match/include searched text
   // TODO: change 'displayTracksData();'
   $("#search-btn").click(function () {
@@ -71,7 +69,7 @@ app.setFormListeners = function () {
 
     datamodel.searchTracks(searchText, function (data) {
       console.log("APP: data", datamodel.tracks);
-      app.displayTracksData();
+      app.displaySearchResults();
     });
   });
 
@@ -94,6 +92,8 @@ app.setFormListeners = function () {
 };
 
 app.setTabListeners = function () {
+  console.log("APP: Setting up tab listeners");
+
   $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
     var currentTarget = e.target;
     var oldTarget = e.relatedTarget;
@@ -102,17 +102,17 @@ app.setTabListeners = function () {
     console.log("APP: Tab switch called: " + currentTarget.id);
 
     switch (currentTarget.id) {
-      case "searchandselect":
+      case "searchandselect-tab":
         app.currentView = "searchandselect";
         app.hideLoader();
         break;
-      case "design":
+      case "design-tab":
         app.currentView = "design";
         if (app.viewDesignTab() == false) {
           return false;
         }
         break;
-      case "design":
+      case "design-tab":
         app.currentView = "publish";
         break;
     }

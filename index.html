@@ -42,14 +42,14 @@
     </a>
   </nav>
 
-  <!-- Modal loading window -->
+  <!-- Modal loader -->
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel" id="loadMe">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-body text-center">
           <div class="loader"></div>
           <div class="loader-txt">
-            <h5>Loading Spotify Track Data</h5>
+            <h5><b>Loading Spotify Track Data</b></h5>
           </div>
         </div>
       </div>
@@ -60,11 +60,12 @@
   <nav>
     <div class="nav nav-tabs" role="tablist">
       <h4><a class="nav-item nav-link active" href="#searchandselect" data-toggle="tab" role="tab"
-          aria-controls="nav-searchandselect" aria-selected="true">Step 1: Search & Select</a></h4>
+          aria-controls="nav-searchandselect" aria-selected="true" id="searchandselect-tab">Step 1: Search & Select</a>
+      </h4>
       <h4><a class="nav-item nav-link" href="#design" data-toggle="tab" role="tab" aria-controls="nav-design"
-          aria-selected="false">Step 2: Design</a></h4>
+          aria-selected="false" id="design-tab">Step 2: Design</a></h4>
       <h4><a class="nav-item nav-link" href="#publish" data-toggle="tab" role="tab" aria-controls="nav-publish"
-          aria-selected="false">Step 3: Publish</a></h4>
+          aria-selected="false" id="publish-tab">Step 3: Publish</a></h4>
     </div>
   </nav>
 
@@ -121,8 +122,7 @@
           </div>
         </div>
         <div class="col" id="p5canvas"></div>
-        <div class="col" id="track-list">
-        </div>
+        <div class="col" id="tracklist"></div>
       </div>
     </div>
     <!-- Step 3: Publish -->
@@ -139,9 +139,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script>
-  <script rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
+
 
   <script>
     app.initialize();

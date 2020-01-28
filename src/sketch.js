@@ -71,7 +71,7 @@ function calculateWave() {
 
 function renderWave() {
   noStroke();
-  // Fill('#ffd54f');
+  // fill('#ffd54f');
   // Draw the wave with an ellipse at each point
   for (let x = 0; x < yvalues.length; x++) {
     var diameter = 15 + sin(theta) * maxDiameter;

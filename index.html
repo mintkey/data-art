@@ -2,157 +2,151 @@
 <html lang="en">
 
 <head>
-  <!-- Required metatags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:700|Karla:400,400i&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rajdhani&display=swap">
 
-  <!-- CUSTOM CODE -->
+  <!-- Spotify Web API and custom JavaScript -->
+  <script src="src/spotify-web-api.js"></script>
   <script src="src/model.js"></script>
   <script src="src/app.js"></script>
 
   <!-- p5.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js" crossorigin="anonymous"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js" crossorigin="anonymous" ></script>-->
   <script src="src/sketch.js"></script>
-
-  <script src="src/spotify-web-api.js"></script>
 
   <title>SoundOut</title>
 </head>
 
 <body>
 
-  <!-- NAVIGATION BAR -->
+  <!-- Navbar -->
   <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path
           d="M18.586 10.081c-1.439 0-1.35 2.802-2.029 4.071-.114.211-.425.184-.5-.044-.771-2.364-.419-8.108-2.51-8.108-2.189 0-1.648 7.433-2.5 10.462-.063.23-.381.25-.474.028-.9-2.161-.799-6.875-2.502-6.875-1.762 0-1.612 3.949-2.302 5.54-.091.213-.392.22-.493.01-.503-1.049-.664-3.165-2.564-3.165h-2.213c-.275 0-.499.224-.499.499s.224.501.499.501h2.213c1.572 0 1.038 3.484 2.854 3.484 1.684 0 1.502-3.79 2.223-5.47.088-.208.382-.202.466.006.805 2.047.79 6.98 2.641 6.98 2.077 0 1.337-7.856 2.443-10.621.083-.211.384-.222.479-.012 1.029 2.25.487 8.126 2.344 8.126 1.639 0 1.737-2.706 2.23-4.038.081-.212.373-.227.474-.027.516 1.001.846 2.572 2.4 2.572h2.235c.275 0 .499-.224.499-.499 0-.276-.224-.5-.499-.5h-2.235c-1.323 0-1.117-2.92-2.68-2.92z" />
       </svg>
-      <span>SoundOut</span>
+      <span id="logo">SoundOut</span>
     </a>
   </nav>
 
-  <!-- Modal -->
-  <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+  <!-- Modal loading window -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel" id="loadMe">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-body text-center">
           <div class="loader"></div>
-          <div clas="loader-txt">
+          <div class="loader-txt">
             <h5>Loading Spotify Track Data</h5>
-            <!--<div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>-->
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TABS -->
+  <!-- Tabs -->
   <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-selectdata-tab" data-toggle="tab" href="#nav-selectdata" role="tab"
-        aria-controls="nav-selectdata" aria-selected="true">Step 1: Select Tracks</a>
-      <a class="nav-item nav-link" id="nav-design-tab" data-toggle="tab" href="#nav-design" role="tab"
-        aria-controls="nav-design" aria-selected="false">Step 2: Design</a>
-      <a class="nav-item nav-link" id="nav-publish-tab" data-toggle="tab" href="#nav-publish" role="tab"
-        aria-controls="nav-publish" aria-selected="false">Step 3: Publish</a>
+    <div class="nav nav-tabs" role="tablist">
+      <h4><a class="nav-item nav-link active" href="#searchandselect" data-toggle="tab" role="tab"
+          aria-controls="nav-searchandselect" aria-selected="true">Step 1: Search & Select</a></h4>
+      <h4><a class="nav-item nav-link" href="#design" data-toggle="tab" role="tab" aria-controls="nav-design"
+          aria-selected="false">Step 2: Design</a></h4>
+      <h4><a class="nav-item nav-link" href="#publish" data-toggle="tab" role="tab" aria-controls="nav-publish"
+          aria-selected="false">Step 3: Publish</a></h4>
     </div>
   </nav>
 
-
-  <!-- TAB CONTENT -->
-  <div class="tab-content" style="margin-top:30px" id="nav-tab-content">
-
-    <!-- STEP 1: SELECT DATA -->
-    <div class="tab-pane container fade show active" id="nav-selecttracks" role="tabpanel" aria-labelledby="nav-selecttracks-tab">
-      <input type="text" id="tracksearch-field" style="width:250px;height:35px" />
-      <a href="#" role="button" id="tracksearch-btn" class="btn btn-info">Search</a>
+  <div class="tab-content" id="content-spacer">
+    <!-- Step 1: Search and Select -->
+    <!--
+      At step 1, the user can search for tracks by typing in relevant keywords for artists, albums, or song titles.
+      The search will yield a list of up to 20 tracks that include or match the search term. The user can then
+      select tracks from the search results which will appear in another list alongside, where the user can
+      see what tracks they have selected so far and can choose to remove tracks they have already selected.
+    -->
+    <div class="tab-pane container fade show active" role="tabpanel" aria-labelledby="searchandselect"
+      id="searchandselect">
+      <input type="text" id="search-field">
+      <a class="btn btn-info" href="#" role="button" id="search-btn">Search</a>
       <hr>
       <div class="container">
         <div class="row">
           <div class="col">
-            <h4>Tracks (Select up to 20)</h4>
-            <div id="selecttracks-list"><a href="#" class="list-group-item list-group-item-action"></a></div>
+            <h5>Tracks (Select up to 20)</h5>
+            <div id="search-results"></div>
           </div>
           <div class="col">
-            <h4>Selected</h4>
-            <div id="selectedtracks-list"></div>
+            <h5>Selected Tracks</h5>
+            <div id="selected-tracks"></div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- STEP 2: DESIGN -->
-    <div class="tab-pane fade" id="nav-design" role="tabpanel" aria-labelledby="nav-design-tab">
+    <!-- Step 2: Design -->
+    <!--
+      At step 2, the user can customize how their selected tracks will be visualized and
+      what kind of audio feature data they would like to see. The user can choose either a circle
+      or a square to represent each track, and either energy, danceability, or valence as the audio
+      feature. The color chosen will represent each track's audio feature data in hues.
+    -->
+    <div class="tab-pane fade" role="tabpanel" aria-labelledby="design" id="design">
       <div class="row">
-        <!-- Side Menu -->
-        <div id="sidemenu" class="col-2">
-
+        <div class="col-2" id="sidemenu">
           <div class="form-group">
             <h3>Variables</h3>
-            <h4 for="form_songshape">Song Shape: </h4>
-            <select class="custom-select custom-select-sm" id="form_songshape">
+            <h4 for="shape-form">Track Shape: </h4>
+            <select class="custom-select custom-select-sm" id="shape-form">
               <option value="circle" selected>Circle</option>
               <option value="square">Square</option>
             </select>
             <br>
-            <h4 for="form_color">Color: </h4>
-            <select class="custom-select custom-select-sm" id="form_color">
+            <h4 for="color-form">Color: </h4>
+            <select class="custom-select custom-select-sm" id="color-form">
               <option value="energy" selected>Energy</option>
               <option value="danceability">Danceability</option>
               <option value="valence">Valence</option>
             </select>
           </div>
         </div>
-
-        <div id="p5canvas" class="col">
-        </div>
-
-        <!-- Track Features-->
-        <div id="tracksinfo" class="col">
+        <div class="col" id="p5canvas"></div>
+        <div class="col" id="track-list">
         </div>
       </div>
     </div>
-
-    <!-- STEP 3: PUBLISH -->
-    <div class="tab-pane fade" id="nav-publish" role="tabpanel" aria-labelledby="nav-publish-tab">
+    <!-- Step 3: Publish -->
+    <!--
+      At step 3, the user can see the finalized version of their data visualization art!
+    -->
+    <div class="tab-pane fade" role="tabpanel" aria-labelledby="publish" id="publish">
       PUBLISH
     </div>
-
-  </div>
   </div>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  <script rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </script>
 
-  <!-- Call to initialize the app code -->
   <script>
     app.initialize();
   </script>
+
 </body>
 
 </html>

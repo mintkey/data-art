@@ -6,11 +6,10 @@ var app = {
   }
 };
 
-
 app.initialize = function () {
   app.initLoader();
-  app.setFormListeners();
   app.setTabListeners();
+  app.setFormListeners();
 
   // Initialize Spotify API
   datamodel.initSpotify(function () {
@@ -19,50 +18,63 @@ app.initialize = function () {
   });
 };
 
-
-// Display list of tracks selected from Step 1 in HTML for Step 2
-app.displayTracklist = function () {
-  if (datamodel.tracks.length < 1) {
-    console.log("APP: No tracks available");
-    return;
-  }
-
-  var html = "<h3># Of Tracks: " + datamodel.tracks.length + "</h3>";
-  html += '<ul class="list-unstyled">';
-
-  // Display album artwork, track title, and artist for each track
-  for (var y = 0; y < datamodel.tracks.length; y++) {
-    html += '<li class="media">';
-    html += '<img src="' + datamodel.tracks[y].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
-    html += '<div class="media-body">';
-    html += '<h5 class="mt-0 mb-1">' + datamodel.tracks[y].name + '</h5>';
-    html += datamodel.tracks[y].artists[0].name;
-    //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
-    html += '</div>';
-    html += '</li>';
-  }
-  html += '</ul>';
-
-  $("#tracklist").html(html);
-};
-
-
-app.viewTrackFeatures = function () {
-  if (app.track.features == null) {
-    console.log("APP: Cannot load track features. Null object");
-  }
-
-  var html = "<h3>Track Features</h3>";
-  $.each(app.track.features, function (key, value) {
-    html += "<b>" + key + "</b>: " + value + "<br>";
+app.initLoader = function () {
+  $("#loadMe").modal({
+    backdrop: "static", // Main UI cannot be clicked while modal is visible
+    keyboard: false, // Keyboard cannot be used to dismiss modal
+    show: true // Display modal loader
   });
+}
 
-  $("#trackfeatures").html(html);
-};
+app.showLoader = function () {
+  $("#loadMe").modal("show");
+
+  var loader = $(this);
+  clearTimeout(loader.data("hideInterval"));
+  loader.data("hideInterval", setTimeout(function () {
+    loader.modal("hide");
+  }, 1000));
+}
+
+app.hideLoader = function () {
+  $("#loadMe").modal("hide");
+}
+
+app.setTabListeners = function () {
+  console.log("APP: Setting up tab listeners");
+
+  $("a[data-toggle=\"tab\"]").on("show.bs.tab", function (e) {
+    var currentTarget = e.target;
+    var oldTarget = e.relatedTarget;
+
+    // Logs tab that was selected by the user
+    console.log("APP: Tab switch called: " + currentTarget.id);
+
+    switch (currentTarget.id) {
+      case "searchandselect-tab":
+        app.currentView = "searchandselect";
+        app.hideLoader();
+        break;
+      case "design-tab":
+        app.currentView = "design";
+        if (app.viewDesignTab() == false) {
+          return false;
+        }
+        break;
+      case "publish-tab":
+        app.currentView = "publish";
+        break;
+    }
+
+    // Set current tab with ID of clicked target tab
+    app.currentTab = currentTarget.id;
+    app.lastTab = oldTarget.id;
+  });
+}
+
 
 app.setFormListeners = function () {
   // Searches for and displays tracks from Spotify API that match/include searched text
-  // TODO: change 'displayTracksData();'
   $("#search-btn").click(function () {
     var searchText = $("#search-field").val();
     console.log("Searching for: " + searchText);
@@ -91,88 +103,46 @@ app.setFormListeners = function () {
   });
 };
 
-app.setTabListeners = function () {
-  console.log("APP: Setting up tab listeners");
-
-  $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-    var currentTarget = e.target;
-    var oldTarget = e.relatedTarget;
-
-    // Logs tab that was selected by the user
-    console.log("APP: Tab switch called: " + currentTarget.id);
-
-    switch (currentTarget.id) {
-      case "searchandselect-tab":
-        app.currentView = "searchandselect";
-        app.hideLoader();
-        break;
-      case "design-tab":
-        app.currentView = "design";
-        if (app.viewDesignTab() == false) {
-          return false;
-        }
-        break;
-      case "design-tab":
-        app.currentView = "publish";
-        break;
-    }
-
-    // Set current tab with id of clicked target tab
-    app.currentTab = currentTarget.id;
-    app.lastTab = oldTarget.id;
-  });
-}
-
-app.initLoader = function () {
-  $("#loadMe").modal({
-    backdrop: "static", // Main UI cannot be clicked while modal is visible
-    keyboard: false, // Keyboard cannot be used to dismiss modal
-    show: true // Display modal loader
-  });
-}
-
-app.hideLoader = function () {
-  $("#loadMe").modal("hide");
-}
-
-app.showLoader = function () {
-  $("#loadMe").modal("show");
-
-  var loader = $(this);
-  clearTimeout(loader.data('hideInterval'));
-  loader.data('hideInterval', setTimeout(function () {
-    loader.modal('hide');
-  },1000));
-}
-
 // Displays list of search results with track title and artist for each track
 app.displaySearchResults = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li class="list-group-item list-group-item-action">' // list-group-item-action makes items in lists selectable
+    html += '<li class="list-group-item list-group-item-action">';
     html += datamodel.tracks[i].name;
-    html += " - " + datamodel.tracks[i].artists[0].name
+    html += " - " + datamodel.tracks[i].artists[0].name;
     html += '</li>';
   }
   html += '</ul>';
 
   $("#search-results").html(html);
 
-  // Logs track id for a track that has been clicked on
-  $(".select-btn").on("click", function (event) {
-    var selectedIndex = $(event.target).data("id");
-    console.log("Selected Index: " + selectedIndex);
+  app.selectTracks();
+}
 
+app.selectTracks = function () {
+  // Logs track that was clicked
+  $('li').click(function() {
+    var i = $(this).index();
+    var trackTitle = datamodel.tracks[i].name;
+    var artist = datamodel.tracks[i].artists[0].name;
+    var trackID = datamodel.tracks[i].id;
+    console.log("Selected track: " + trackTitle + " - " + artist);
+    console.log("Track ID: " + trackID);
+
+    datamodel.searchSelectedTrack(trackTitle, function (data) {
+      console.log("APP: data", datamodel.selectedTracks);
+      app.displaySelectedTracks();
+    });
   });
 }
 
 // Displays tracks that have been selected from search results in an adjacent list
 app.displaySelectedTracks = function () {
   var html = '<ul class="list-group">';
-  for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li class="list-group-item">'
-    html += datamodel.tracks[i].name;
-    html += " - " + datamodel.tracks[i].artists[0].name
+  for (var i = 0; i < datamodel.selectedTracks.length; i++) {
+    html += '<li class="list-group-item list-group-item-action">'
+    html += datamodel.selectedTracks[i].name;
+    html += " - " + datamodel.selectedTracks[i].artists[0].name;
     html += '</li>';
   }
   html += '</ul>';
@@ -192,9 +162,49 @@ app.viewDesignTab = function () {
 
   datamodel.getAudioFeaturesBatch(function () {
     app.displayTracklist();
-    app.loaded = true;   
+    app.loaded = true;
     app.hideLoader();
   });
 
   return true;
+};
+
+// Display list of tracks selected from Step 1 in HTML for Step 2
+app.displayTracklist = function () {
+  if (datamodel.tracks.length < 1) {
+    console.log("APP: No tracks available");
+    return;
+  }
+
+  var html = "<h3># Of Tracks: " + datamodel.tracks.length + "</h3>";
+  html += '<ul class="list-unstyled">';
+
+  // Display album artwork, track title, and artist for each track
+  for (var i = 0; i < datamodel.tracks.length; i++) {
+    html += '<li class="media">';
+    html += '<img src="' + datamodel.tracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
+    html += '<div class="media-body">';
+    html += '<h5 class="mt-0 mb-1">' + datamodel.tracks[i].name + '</h5>';
+    html += datamodel.tracks[i].artists[0].name;
+    //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
+    html += '</div>';
+    html += '</li>';
+  }
+  html += '</ul>';
+
+  $("#track-features").html(html);
+};
+
+
+app.viewTrackFeatures = function () {
+  if (app.track.features == null) {
+    console.log("APP: Cannot load track features. Null object");
+  }
+
+  var html = "<h3>Track Features</h3>";
+  $.each(app.track.features, function (key, value) {
+    html += "<b>" + key + "</b>: " + value + "<br>";
+  });
+
+  $("#track-features").html(html);
 };

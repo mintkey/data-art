@@ -6,11 +6,14 @@ Documentation: https://doxdox.org/jmperez/spotify-web-api-js
 var spotifyApi;
 var datamodel = {
   spotifyToken: null,
-  track: {},
+  searchData: null,
   tracks: [],
-  searchData: null
+  selection: [],
+  selectedTracks: []
 };
 var batchCount = -1;
+
+
 
 // URLs for generating and authenticating token locally
 var spotifyVerifyURL = "http://thenewten.org/sp/verify.php";
@@ -26,7 +29,7 @@ datamodel.initSpotify = function (callback) {
     //return;
   }
 
-  // Make call to custom PHP file to get token
+  // Make call to custom URL that generates Spotify token and get the token
   $.ajax({
     url: spotifyVerifyURL_local,
     type: "GET",
@@ -50,7 +53,7 @@ datamodel.getToken = function () {
 
 datamodel.handleError = function (err) {
   console.log("MODEL: Error when making a call", err);
-  //console.error(err);
+  console.error(err);
 };
 
 datamodel.searchTracks = function (searchTerm, callback) {
@@ -59,25 +62,44 @@ datamodel.searchTracks = function (searchTerm, callback) {
     return null;
   }
 
-  spotifyApi.searchTracks(searchTerm).then(
+  spotifyApi.searchTracks(searchTerm).then (
     function (data) {
       console.log('MODEL: Search by "' + searchTerm + '"', data);
       datamodel.searchData = data;
-      app.displaySearchResults();
-      datamodel.selectTracks();
+      datamodel.getResults();
       callback();
     },
     function (err) {
       datamodel.handleError(err);
-    }
-  );
+    });
 };
 
-// Tracks that are returned by Spotify API are selected and appended to datamodel.tracks array
-// TODO: Make track results selectable by the user
-datamodel.selectTracks = function (selections) {
+// Tracks that are returned by Spotify API are set to datamodel.tracks array
+datamodel.getResults = function () {
   datamodel.tracks = datamodel.searchData.tracks.items;
-  model.track = datamodel.tracks; // ???
+}
+
+datamodel.searchSelectedTrack = function (searchTerm, callback) {
+  if (searchTerm == null) {
+    console.log("MODEL: No search term passed as a parameter. No track selected");
+    return null;
+  }
+
+  spotifyApi.searchTracks(searchTerm, {limit: 1}).then (
+    function (data) {
+      console.log('MODEL: Search by "' + searchTerm + '"', data);
+      datamodel.searchData = data;
+      datamodel.appendSelection();
+      callback();
+    },
+    function (err) {
+      datamodel.handleError(err);
+    });
+};
+
+// Selected track searched for in Spotify API gets returned and set to datamodel.selectedTracks array
+datamodel.appendSelection = function () {
+  datamodel.selectedTracks = datamodel.searchData.tracks.items;
 }
 
 datamodel.getAudioFeaturesBatch = function (callbackdone) {

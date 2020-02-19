@@ -28,12 +28,6 @@ app.initLoader = function () {
 
 app.showLoader = function () {
   $("#loadMe").modal("show");
-
-  var loader = $(this);
-  clearTimeout(loader.data("hideInterval"));
-  loader.data("hideInterval", setTimeout(function () {
-    loader.modal("hide");
-  }, 1000));
 }
 
 app.hideLoader = function () {
@@ -107,18 +101,28 @@ app.setFormListeners = function () {
 app.displaySearchResults = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li class="list-group-item list-group-item-action">';
+    html += '<li data-id="'+i+'" class="list-group-item select-btn list-group-item-action">';
     html += datamodel.tracks[i].name;
     html += " - " + datamodel.tracks[i].artists[0].name;
     html += '</li>';
   }
   html += '</ul>';
 
+  //display the dynamic html created above
   $("#search-results").html(html);
 
-  app.selectTracks();
+  //setup click handlers on all the list items in the html just posted
+  // Logs track id for a track that has been clicked on
+  $(".select-btn").on("click", function (event) {
+    var selectedIndex = $(event.target).data("id");
+    console.log("Selected Index: " + selectedIndex);
+    datamodel.addTrackFromSearch(selectedIndex,function(){
+      app.displaySelectedTracks();
+    });
+  });
 }
 
+/*
 app.selectTracks = function () {
   // Logs track that was clicked
   $('li').click(function() {
@@ -135,12 +139,13 @@ app.selectTracks = function () {
     });
   });
 }
+*/
 
 // Displays tracks that have been selected from search results in an adjacent list
 app.displaySelectedTracks = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.selectedTracks.length; i++) {
-    html += '<li class="list-group-item list-group-item-action">'
+    html += '<li data-id="'+i+'" class="list-group-item remove-btn list-group-item-action">'
     html += datamodel.selectedTracks[i].name;
     html += " - " + datamodel.selectedTracks[i].artists[0].name;
     html += '</li>';
@@ -148,6 +153,16 @@ app.displaySelectedTracks = function () {
   html += '</ul>';
 
   $("#selected-tracks").html(html);
+
+  //setup click handlers on all the list items in the html just posted
+  // Logs track id for a track that has been clicked on
+  $(".remove-btn").on("click", function (event) {
+    var selectedIndex = $(event.target).data("id");
+    console.log("Removing Index: " + selectedIndex);
+    datamodel.removeSelectedTrack(selectedIndex,function(){
+      app.displaySelectedTracks();
+    });
+  });
 }
 
 // This tab can only be opened if the user has successfully selected tracks in Step 1

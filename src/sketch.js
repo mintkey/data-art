@@ -20,16 +20,17 @@ function draw() {
   clear();
   background('#000');
 
+  /*
+
   // If the app has not loaded yet then don't run P5 code
   if (app.loaded == false) {
     return;
   }
 
-  /*
-  Valence-dependent shape fluctuation:
-  Higher valence means really small to really large, lower valence means
-  slightly small to slightly large
-  */
+  //Valence-dependent shape fluctuation:
+  //Higher valence means really small to really large, lower valence means
+  //slightly small to slightly large
+
   isSetup = true;
   if (model.track == null) {
     $.each(model.track.features, function (key, value) {
@@ -51,8 +52,11 @@ function draw() {
   coloring();
   calculateWave();
   renderWave();
+  */
+
 }
 
+/*
 function calculateWave() {
   // Tempo-dependent angular velocity
   $.each(model.track.features, function (key, value) {
@@ -90,3 +94,4 @@ function coloring() {
 
   fill(r, g, b);
 }
+*/

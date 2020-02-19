@@ -143,7 +143,7 @@ datamodel.getAudioFeaturesBatch = function (callbackdone) {
 }
 
 datamodel.getAudioFeatures = function (id, trackindex, callback) {
-  spotifyApi.getAudioFeatures(id).then(
+  spotifyApi.getAudioFeaturesForTrack(id).then(
     function (data) {
       console.log("ID[" + id + "] Getting audio features", data);
       datamodel.tracks[trackindex].features = data;

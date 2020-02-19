@@ -8,6 +8,7 @@ var app = {
 
 app.initialize = function () {
   app.initLoader();
+  app.showLoader();
   app.setTabListeners();
   app.setFormListeners();
 
@@ -22,18 +23,12 @@ app.initLoader = function () {
   $("#loadMe").modal({
     backdrop: "static", // Main UI cannot be clicked while modal is visible
     keyboard: false, // Keyboard cannot be used to dismiss modal
-    show: true // Display modal loader
+    show: false // Display modal loader
   });
 }
 
 app.showLoader = function () {
   $("#loadMe").modal("show");
-
-  var loader = $(this);
-  clearTimeout(loader.data("hideInterval"));
-  loader.data("hideInterval", setTimeout(function () {
-    loader.modal("hide");
-  }, 1000));
 }
 
 app.hideLoader = function () {
@@ -107,18 +102,28 @@ app.setFormListeners = function () {
 app.displaySearchResults = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li class="list-group-item list-group-item-action">';
+    html += '<li data-id="'+i+'" class="list-group-item select-btn list-group-item-action">';
     html += datamodel.tracks[i].name;
     html += " - " + datamodel.tracks[i].artists[0].name;
     html += '</li>';
   }
   html += '</ul>';
 
+  //display the dynamic html created above
   $("#search-results").html(html);
 
-  app.selectTracks();
+  //setup click handlers on all the list items in the html just posted
+  // Logs track id for a track that has been clicked on
+  $(".select-btn").on("click", function (event) {
+    var selectedIndex = $(event.target).data("id");
+    console.log("Selected Index: " + selectedIndex);
+    datamodel.addTrackFromSearch(selectedIndex,function(){
+      app.displaySelectedTracks();
+    });
+  });
 }
 
+/*
 app.selectTracks = function () {
   // Logs track that was clicked
   $('li').click(function() {
@@ -135,12 +140,13 @@ app.selectTracks = function () {
     });
   });
 }
+*/
 
 // Displays tracks that have been selected from search results in an adjacent list
 app.displaySelectedTracks = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.selectedTracks.length; i++) {
-    html += '<li class="list-group-item list-group-item-action">'
+    html += '<li data-id="'+i+'" class="list-group-item remove-btn list-group-item-action">'
     html += datamodel.selectedTracks[i].name;
     html += " - " + datamodel.selectedTracks[i].artists[0].name;
     html += '</li>';
@@ -148,6 +154,16 @@ app.displaySelectedTracks = function () {
   html += '</ul>';
 
   $("#selected-tracks").html(html);
+
+  //setup click handlers on all the list items in the html just posted
+  // Logs track id for a track that has been clicked on
+  $(".remove-btn").on("click", function (event) {
+    var selectedIndex = $(event.target).data("id");
+    console.log("Removing Index: " + selectedIndex);
+    datamodel.removeSelectedTrack(selectedIndex,function(){
+      app.displaySelectedTracks();
+    });
+  });
 }
 
 // This tab can only be opened if the user has successfully selected tracks in Step 1
@@ -161,7 +177,7 @@ app.viewDesignTab = function () {
   }
 
   datamodel.getAudioFeaturesBatch(function () {
-    app.displayTracklist();
+    app.displaySelectedTracklist();
     app.loaded = true;
     app.hideLoader();
   });
@@ -169,23 +185,23 @@ app.viewDesignTab = function () {
   return true;
 };
 
-// Display list of tracks selected from Step 1 in HTML for Step 2
-app.displayTracklist = function () {
-  if (datamodel.tracks.length < 1) {
+// Display list selected tracks
+app.displaySelectedTracklist = function () {
+  if (datamodel.selectedTracks.length < 1) {
     console.log("APP: No tracks available");
     return;
   }
 
-  var html = "<h3># Of Tracks: " + datamodel.tracks.length + "</h3>";
+  var html = "<h3># Of Tracks: " + datamodel.selectedTracks.length + "</h3>";
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track
-  for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li class="media">';
-    html += '<img src="' + datamodel.tracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
+  for (var i=0; i < datamodel.selectedTracks.length; i++) {
+    html += '<li data-trackid="'+i+'" class="media list-group-item play-track-btn list-group-item-action">';
+    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
     html += '<div class="media-body">';
-    html += '<h5 class="mt-0 mb-1">' + datamodel.tracks[i].name + '</h5>';
-    html += datamodel.tracks[i].artists[0].name;
+    html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
+    html += datamodel.selectedTracks[i].artists[0].name;
     //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
     html += '</div>';
     html += '</li>';
@@ -193,6 +209,17 @@ app.displayTracklist = function () {
   html += '</ul>';
 
   $("#track-features").html(html);
+
+  //update click handler for music tracks
+  $(".play-track-btn").on("click", function (event) {
+    var selectedIndex = $(event.currentTarget).data("trackid");
+    console.log("Playing Index: " + selectedIndex);
+    var previewURL = datamodel.selectedTracks[selectedIndex].preview_url;
+    console.log("Playing URL: " + previewURL);
+    app.playTrack(previewURL,function(){
+      console.log("Track is playing...");
+    });
+  });
 };
 
 
@@ -208,3 +235,20 @@ app.viewTrackFeatures = function () {
 
   $("#track-features").html(html);
 };
+
+app.playTrack = function(trackurl,callback){
+
+  var sound = new Howl({
+    src: [trackurl],
+    format: ['mp3'],
+    onplayerror: function() {
+      console.log("ERROR: Cannot play track for some reason...");
+    }
+  });
+
+  sound.play();
+
+  callback();
+};
+
+

@@ -56,6 +56,30 @@ datamodel.handleError = function (err) {
   console.error(err);
 };
 
+//takes in an index from datamodel.tracks[]
+//adds to datamodel.selectedTracks[] 
+datamodel.addTrackFromSearch = function(trackIndex,callback){
+  var tempObj = datamodel.tracks[trackIndex];
+  if(tempObj == null){
+    console.log("MODEL: addTrackFromSearch() ERROR CANNOT FIND INDEX: " + trackIndex);
+  }else{
+    console.log("MODEL: addTrackFromSearch() trackindex: " + trackIndex);
+    datamodel.selectedTracks.push(tempObj);
+    callback();
+  }
+};
+
+datamodel.removeSelectedTrack = function(trackIndex,callback){
+  var tempObj = datamodel.selectedTracks[trackIndex];
+  if(tempObj == null){
+    console.log("MODEL: removeSelectedTrack() ERROR CANNOT FIND INDEX: " + trackIndex);
+  }else{
+    console.log("MODEL: removeSelectedTrack() trackindex: " + trackIndex);
+    datamodel.selectedTracks.splice(trackIndex,1);
+    callback();
+  }
+};
+
 datamodel.searchTracks = function (searchTerm, callback) {
   if (searchTerm == null) {
     console.log("MODEL: Cannot get tracks. No search term passed as a parameter");
@@ -119,7 +143,7 @@ datamodel.getAudioFeaturesBatch = function (callbackdone) {
 }
 
 datamodel.getAudioFeatures = function (id, trackindex, callback) {
-  spotifyApi.getAudioFeatures(id).then(
+  spotifyApi.getAudioFeaturesForTrack(id).then(
     function (data) {
       console.log("ID[" + id + "] Getting audio features", data);
       datamodel.tracks[trackindex].features = data;

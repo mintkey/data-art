@@ -109,12 +109,12 @@ hr {
 }
 
 .panel-design{
-  border: solid 1px #cccccc;
+  /*border: solid 1px #cccccc;
   background: #d4dbdc;
+  */
 }
 
 #sidemenu {
-  background: #04080f;
   z-index: 3;
 }
 

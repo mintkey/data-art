@@ -198,7 +198,7 @@ app.displaySelectedTracklist = function () {
   // Display album artwork, track title, and artist for each track
   for (var i=0; i < datamodel.selectedTracks.length; i++) {
     html += '<li data-trackid="'+i+'" class="media select-track-btn list-group-item list-group-item-action">';
-    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
+    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="32px" width="32px">';
     html += '<div class="media-body">';
     html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
     html += datamodel.selectedTracks[i].artists[0].name;
@@ -230,8 +230,8 @@ app.displaySelectedTracklist = function () {
 };
 
 app.viewTrackFeaturesByIndex = function (index) {
-  var html = "<h3>Track Features</h3>";
   var selectedTrack = datamodel.selectedTracks[index];
+  var html = "<h5>Features for Track: <b>"+selectedTrack.name+"</b></h5>";
   $.each(selectedTrack.features, function (key, value) {
     html += "<b>" + key + "</b>: " + value + "<br>";
   });

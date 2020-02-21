@@ -20,6 +20,10 @@ hr {
   border-color: #dae3e5;
 }
 
+.p5Canvas{
+  border: 5px solid #dae3e5;
+}
+
 /* Modal loader */
 .modal-content {
   border-radius: 0px;

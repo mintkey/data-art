@@ -194,7 +194,7 @@ app.displaySelectedTracklist = function () {
   }
 
   var html = "<h5># Of Tracks: " + datamodel.selectedTracks.length + "</h5>";
-  html += '<button id="explore-alltracks-btn">All Tracks</button>'
+  html += '<button id="explore-alltracks-btn">Visualize All Tracks</button>'
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track

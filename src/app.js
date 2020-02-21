@@ -1,6 +1,7 @@
 var app = {
   loaded: false,
   currentView: "data",
+  exploreState: "all",
   viz: {
     shape: "circle"
   }
@@ -193,29 +194,28 @@ app.displaySelectedTracklist = function () {
   }
 
   var html = "<h5># Of Tracks: " + datamodel.selectedTracks.length + "</h5>";
+  html += '<button id="explore-alltracks-btn">All Tracks</button>'
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track
-select-tracks
   for (var i=0; i < datamodel.selectedTracks.length; i++) {
     html += '<li data-trackid="'+i+'" class="media select-track-btn list-group-item list-group-item-action">';
     html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="32px" width="32px">';
-    
-  for (var i = 0; i < datamodel.selectedTracks.length; i++) {
-    html += '<li data-trackid="' + i + '" class="media list-group-item play-track-btn list-group-item-action">';
-    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
-master
     html += '<div class="media-body">';
     html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
     html += datamodel.selectedTracks[i].artists[0].name;
     //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
-    html += '<button data-trackid="'+i+'" class="play-track-btn">Preview</button>';
+    html += '<br><button data-trackid="'+i+'" class="play-track-btn">Preview</button>';
     html += '</div>';
     html += '</li>';
   }
   html += '</ul>';
 
+  //update html with tracks
   $("#track-list").html(html);
+
+  //update the canvas
+  draw();
 
   // Update click handler for music tracks
   // TODO: Fix layered playback when track is clicked more than once
@@ -234,6 +234,11 @@ master
     console.log("Selected Track Index: " + selectedIndex);
     app.viewTrackFeaturesByIndex(selectedIndex);
   });
+
+  $("#explore-alltracks-btn").on("click", function(){
+    app.exploreState = "all";
+    draw();
+  });
 };
 
 app.viewTrackFeaturesByIndex = function (index) {
@@ -243,7 +248,12 @@ app.viewTrackFeaturesByIndex = function (index) {
     html += "<b>" + key + "</b>: " + value + "<br>";
   });
 
+  //update html
   $("#track-features").html(html);
+
+  //update canvas for single track view
+  app.exploreState = index;
+  draw();
 };
 
 

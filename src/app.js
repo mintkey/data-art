@@ -8,7 +8,7 @@ var app = {
 
 app.initialize = function () {
   app.initLoader();
-  app.showLoader();
+  //app.showLoader();
   app.setTabListeners();
   app.setFormListeners();
 
@@ -192,23 +192,30 @@ app.displaySelectedTracklist = function () {
     return;
   }
 
-  var html = "<h3># Of Tracks: " + datamodel.selectedTracks.length + "</h3>";
+  var html = "<h5># Of Tracks: " + datamodel.selectedTracks.length + "</h5>";
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track
+select-tracks
+  for (var i=0; i < datamodel.selectedTracks.length; i++) {
+    html += '<li data-trackid="'+i+'" class="media select-track-btn list-group-item list-group-item-action">';
+    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="32px" width="32px">';
+    
   for (var i = 0; i < datamodel.selectedTracks.length; i++) {
     html += '<li data-trackid="' + i + '" class="media list-group-item play-track-btn list-group-item-action">';
     html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
+master
     html += '<div class="media-body">';
     html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
     html += datamodel.selectedTracks[i].artists[0].name;
     //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
+    html += '<button data-trackid="'+i+'" class="play-track-btn">Preview</button>';
     html += '</div>';
     html += '</li>';
   }
   html += '</ul>';
 
-  $("#track-features").html(html);
+  $("#track-list").html(html);
 
   // Update click handler for music tracks
   // TODO: Fix layered playback when track is clicked more than once
@@ -221,6 +228,22 @@ app.displaySelectedTracklist = function () {
       console.log("Track is playing...");
     });
   });
+
+  $(".select-track-btn").on("click", function (event) {
+    var selectedIndex = $(event.currentTarget).data("trackid");
+    console.log("Selected Track Index: " + selectedIndex);
+    app.viewTrackFeaturesByIndex(selectedIndex);
+  });
+};
+
+app.viewTrackFeaturesByIndex = function (index) {
+  var selectedTrack = datamodel.selectedTracks[index];
+  var html = "<h5>Features for Track: <b>"+selectedTrack.name+"</b></h5>";
+  $.each(selectedTrack.features, function (key, value) {
+    html += "<b>" + key + "</b>: " + value + "<br>";
+  });
+
+  $("#track-features").html(html);
 };
 
 

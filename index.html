@@ -59,14 +59,13 @@
 
   <!-- Tabs -->
   <nav>
-    <div class="nav nav-tabs" role="tablist">
-      <h4><a class="nav-item nav-link active" href="#searchandselect" data-toggle="tab" role="tab"
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" href="#searchandselect" data-toggle="tab" role="tab"
           aria-controls="nav-searchandselect" aria-selected="true" id="searchandselect-tab">Step 1: Search & Select</a>
-      </h4>
-      <h4><a class="nav-item nav-link" href="#design" data-toggle="tab" role="tab" aria-controls="nav-design"
-          aria-selected="false" id="design-tab">Step 2: Listen</a></h4>
-      <h4><a class="nav-item nav-link" href="#publish" data-toggle="tab" role="tab" aria-controls="nav-publish"
-          aria-selected="false" id="publish-tab">Step 3: Publish</a></h4>
+      <a class="nav-item nav-link" href="#design" data-toggle="tab" role="tab" aria-controls="nav-design"
+          aria-selected="false" id="design-tab">Step 2: Design</a>
+      <a class="nav-item nav-link" href="#publish" data-toggle="tab" role="tab" aria-controls="nav-publish"
+          aria-selected="false" id="publish-tab">Step 3: Publish</a>
     </div>
   </nav>
 
@@ -80,16 +79,21 @@
     -->
     <div class="tab-pane container fade show active" role="tabpanel" aria-labelledby="searchandselect"
       id="searchandselect">
-      <input type="text" id="search-field">
-      <a class="btn btn-info" href="#" role="button" id="search-btn">Search</a>
-      <hr>
-      <div class="container">
+      <div class="btn-toolbar mb-3" role="toolbar">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="song title or artist" id="search-field"aria-label="Artist/Song Search" aria-describedby="search-btn">
+          <div class="input-group-append">
+            <div class="button input-group-text" id="search-btn">Search</div>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="list-container">
         <div class="row">
-          <div class="col">
-            <h5>Tracks (Select up to 20)</h5>
+          <div class="col list-tracks" id="list-track-search">
+            <h5>Search Results</h5>
             <div id="search-results"></div>
           </div>
-          <div class="col">
+          <div class="col list-tracks" id="list-track-selected">
             <h5>Selected Tracks</h5>
             <div id="selected-tracks"></div>
           </div>
@@ -106,12 +110,15 @@
     <div class="tab-pane fade" role="tabpanel" aria-labelledby="listen" id="listen">
       <div class="row">
         <div class="col-2" id="sidemenu">
-          <div class="col" id="track-features">
+          <div class="col panel-design" id="track-list">
             
           </div>
         </div>
-        <div class="col" id="p5canvas">
+        <div class="col panel-design" id="p5canvas">
           
+        </div>
+        <div class="col-3 panel-design" id="track-features">
+          Click on an individual track to display features
         </div>
       </div>
     </div>

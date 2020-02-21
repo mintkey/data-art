@@ -58,6 +58,21 @@ hr {
 .navbar {
   width: 100%;
 }
+.nav-tabs{
+  background-color: #f8f9fa;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 400;
+}
+
+.nav-link{
+  background-color: #f1f1f1;
+  border: solid 1px #dae3e5 !important;
+}
+
+.nav-link.active{
+  background-color: #dae3e5 !important;
+  border: 0px;
+}
 
 #logo {
   font-family: 'Quicksand', sans-serif;
@@ -68,13 +83,28 @@ hr {
   margin-top: 30px;
 }
 
-#search-field {
+#search-field-old {
   width: 250px;
   height: 35px;
 }
 
+.list-tracks{
+  border: solid 1px #cccccc;
+  padding: 10px 30px 20px 30px;
+  background: #d4dbdc;
+  margin-right: 10px;
+}
+.col{
+  overflow-wrap: break-word !important;
+}
+
+.panel-design{
+  /*border: solid 1px #cccccc;
+  background: #d4dbdc;
+  */
+}
+
 #sidemenu {
-  background: #04080f;
   z-index: 3;
 }
 

@@ -11,22 +11,35 @@ var isSetup = false;
 function setup() {
   var canvas = createCanvas(700, 600);
   canvas.parent("p5canvas");
-
-  colorMode(RGB, 255);
-  rectMode(CENTER);
+  rectMode(CORNER);
 }
 
 function draw() {
   clear();
-  background('#000');
-
-  /*
 
   // If the app has not loaded yet then don't run P5 code
   if (app.loaded == false) {
     return;
   }
 
+  var tracks = datamodel.selectedTracks;
+
+  for(var i=0; i<tracks.length; i++){
+    var barHeight = 20;
+    var yPos = (i*(barHeight+2))+10;
+    var valence = tracks[i].features.valence;
+    var valenceWidth = map(valence,0,1,0,350);
+
+    fill("black")
+    text(tracks[i].name,0,yPos+2);
+    rect(100,yPos - (barHeight/2),350,20);
+    fill("#ffcc00");
+    rect(100,yPos - (barHeight/2),valenceWidth,20);
+    fill("black");
+    text("Valence: "+valence,100,yPos+2);
+  }
+
+  /*
   //Valence-dependent shape fluctuation:
   //Higher valence means really small to really large, lower valence means
   //slightly small to slightly large

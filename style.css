@@ -1,15 +1,17 @@
-body {
+body,
+h5,
+h6 {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   color: #101111;
-  background: #dae3e5;
+  background: #f2f2f2;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 400;
 }
 
@@ -17,7 +19,7 @@ hr {
   width: 240px;
   margin-left: 10px;
   border-width: 0.75px;
-  border-color: #dae3e5;
+  border-color: #f2f2f2;
 }
 
 /* Modal loader */
@@ -53,24 +55,12 @@ hr {
   }
 }
 
-.loader-txt {
-  p {
-    font-size: 13px;
-    color: #666;
-
-    small {
-      font-size: 11.5px;
-      color: #999;
-    }
-  }
-}
-
 .navbar {
   width: 100%;
 }
 
 #logo {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1.4rem;
 }
 

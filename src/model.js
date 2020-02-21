@@ -26,7 +26,6 @@ datamodel.initSpotify = function (callback) {
 
   if (datamodel.getToken() != null) {
     console.log("MODEL: Token already exists");
-    //return;
   }
 
   // Make call to custom URL that generates Spotify token and get the token
@@ -56,24 +55,24 @@ datamodel.handleError = function (err) {
   console.error(err);
 };
 
-//takes in an index from datamodel.tracks[]
-//adds to datamodel.selectedTracks[] 
-datamodel.addTrackFromSearch = function(trackIndex,callback){
+// Takes in the index of selected track from datamodel.tracks and appends the track to datamodel.selectedTracks
+datamodel.addTrackFromSearch = function(trackIndex, callback) {
   var tempObj = datamodel.tracks[trackIndex];
-  if(tempObj == null){
+  if (tempObj == null) {
     console.log("MODEL: addTrackFromSearch() ERROR CANNOT FIND INDEX: " + trackIndex);
-  }else{
+  } else {
     console.log("MODEL: addTrackFromSearch() trackindex: " + trackIndex);
     datamodel.selectedTracks.push(tempObj);
     callback();
   }
 };
 
+// Takes in the index of selected track from datamodel.selectedTracks and removes it from the array
 datamodel.removeSelectedTrack = function(trackIndex,callback){
   var tempObj = datamodel.selectedTracks[trackIndex];
-  if(tempObj == null){
+  if (tempObj == null){
     console.log("MODEL: removeSelectedTrack() ERROR CANNOT FIND INDEX: " + trackIndex);
-  }else{
+  } else {
     console.log("MODEL: removeSelectedTrack() trackindex: " + trackIndex);
     datamodel.selectedTracks.splice(trackIndex,1);
     callback();

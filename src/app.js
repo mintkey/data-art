@@ -102,22 +102,22 @@ app.setFormListeners = function () {
 app.displaySearchResults = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.tracks.length; i++) {
-    html += '<li data-id="'+i+'" class="list-group-item select-btn list-group-item-action">';
+    html += '<li data-id="' + i + '" class="list-group-item list-group-item-action select-track">';
     html += datamodel.tracks[i].name;
     html += " - " + datamodel.tracks[i].artists[0].name;
     html += '</li>';
   }
   html += '</ul>';
 
-  //display the dynamic html created above
+  // Display the dynamic HTML created above
   $("#search-results").html(html);
 
-  //setup click handlers on all the list items in the html just posted
-  // Logs track id for a track that has been clicked on
-  $(".select-btn").on("click", function (event) {
+  // Set up click handlers on all the list items displayed in HTML
+  // Logs array index for a track that's been clicked on
+  $(".select-track").on("click", function (event) {
     var selectedIndex = $(event.target).data("id");
     console.log("Selected Index: " + selectedIndex);
-    datamodel.addTrackFromSearch(selectedIndex,function(){
+    datamodel.addTrackFromSearch(selectedIndex, function () {
       app.displaySelectedTracks();
     });
   });
@@ -146,7 +146,7 @@ app.selectTracks = function () {
 app.displaySelectedTracks = function () {
   var html = '<ul class="list-group">';
   for (var i = 0; i < datamodel.selectedTracks.length; i++) {
-    html += '<li data-id="'+i+'" class="list-group-item remove-btn list-group-item-action">'
+    html += '<li data-id="' + i + '" class="list-group-item list-group-item-action remove-track">'
     html += datamodel.selectedTracks[i].name;
     html += " - " + datamodel.selectedTracks[i].artists[0].name;
     html += '</li>';
@@ -155,12 +155,12 @@ app.displaySelectedTracks = function () {
 
   $("#selected-tracks").html(html);
 
-  //setup click handlers on all the list items in the html just posted
-  // Logs track id for a track that has been clicked on
-  $(".remove-btn").on("click", function (event) {
+  // Set up click handlers on all the list items in the HTML just posted
+  // Logs array index for a track that's been clicked on
+  $(".remove-track").on("click", function (event) {
     var selectedIndex = $(event.target).data("id");
     console.log("Removing Index: " + selectedIndex);
-    datamodel.removeSelectedTrack(selectedIndex,function(){
+    datamodel.removeSelectedTrack(selectedIndex, function () {
       app.displaySelectedTracks();
     });
   });
@@ -185,7 +185,7 @@ app.viewDesignTab = function () {
   return true;
 };
 
-// Display list selected tracks
+// Display list of selected tracks
 app.displaySelectedTracklist = function () {
   if (datamodel.selectedTracks.length < 1) {
     console.log("APP: No tracks available");
@@ -196,9 +196,15 @@ app.displaySelectedTracklist = function () {
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track
+select-tracks
   for (var i=0; i < datamodel.selectedTracks.length; i++) {
     html += '<li data-trackid="'+i+'" class="media select-track-btn list-group-item list-group-item-action">';
     html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="32px" width="32px">';
+    
+  for (var i = 0; i < datamodel.selectedTracks.length; i++) {
+    html += '<li data-trackid="' + i + '" class="media list-group-item play-track-btn list-group-item-action">';
+    html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="64px" width="64px">';
+master
     html += '<div class="media-body">';
     html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
     html += datamodel.selectedTracks[i].artists[0].name;
@@ -211,13 +217,14 @@ app.displaySelectedTracklist = function () {
 
   $("#track-list").html(html);
 
-  //update click handler for music tracks
+  // Update click handler for music tracks
+  // TODO: Fix layered playback when track is clicked more than once
   $(".play-track-btn").on("click", function (event) {
     var selectedIndex = $(event.currentTarget).data("trackid");
     console.log("Playing Index: " + selectedIndex);
     var previewURL = datamodel.selectedTracks[selectedIndex].preview_url;
     console.log("Playing URL: " + previewURL);
-    app.playTrack(previewURL,function(){
+    app.playTrack(previewURL, function () {
       console.log("Track is playing...");
     });
   });
@@ -253,19 +260,15 @@ app.viewTrackFeatures = function () {
   $("#track-features").html(html);
 };
 
-app.playTrack = function(trackurl,callback){
-
+app.playTrack = function (trackurl, callback) {
   var sound = new Howl({
     src: [trackurl],
     format: ['mp3'],
-    onplayerror: function() {
-      console.log("ERROR: Cannot play track for some reason...");
+    onplayerror: function () {
+      console.log("ERROR: Cannot play track");
     }
   });
 
   sound.play();
-
   callback();
 };
-
-

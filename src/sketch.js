@@ -39,8 +39,24 @@ function draw() {
     plotTrack(app.exploreState);
   }
 
+  //create the grid
+  plotDimensions();
+
   noLoop();
 }
+
+function plotDimensions(){
+  //plots for energy
+  var lineCol = color("#AAAAAA");
+  strokeWeight(1);
+  stroke(lineCol);
+  line(width/2,height/2,width,height/2);
+  fill(lineCol);
+  text("low",width/2,height/2);
+  text("medium",width/2+((width/2)/2),height/2);
+  text("high",width-30,height/2);
+}
+
 
 function plotTrack(trackIndex){
 
@@ -50,19 +66,24 @@ function plotTrack(trackIndex){
 
   //grab the values from the track object
   var valence = tracks[trackIndex].features.valence;
+  var energy = tracks[trackIndex].features.energy;
   var trackname = tracks[trackIndex].name;
 
   //map the values if necessary
   var circleWidth = map(valence,0,1,minCircleSize,maxCircleSize);
+  var colorChannel = map(energy,0,1,0,255);
+  var strokeSize = map(energy,.2,1,0.1,5);
 
   //draw the circle
-  var col = color(255,0,0);
+  var col = color(colorChannel,0,0);
   noFill();
   stroke(col);
+  strokeWeight(strokeSize);
   ellipse(width/2,height/2,circleWidth,circleWidth);
   fill(col);
   var textXPos = (width/2)-(textSize(trackname)/2);
   var textYPos = (height/2)-(circleWidth/2)-5;
+  strokeWeight(1);
   text(trackname + " (" +valence+ ")",textXPos,textYPos);
 
 }

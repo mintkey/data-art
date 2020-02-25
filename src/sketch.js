@@ -12,7 +12,11 @@ function setup() {
   var canvas = createCanvas(700, 600);
   canvas.parent("p5canvas");
   rectMode(CORNER);
+  ellipseMode(CENTER);
 }
+
+//create a reference to list of selected tracks
+var tracks = datamodel.selectedTracks;
 
 function draw() {
   clear();
@@ -22,22 +26,67 @@ function draw() {
     return;
   }
 
-  var tracks = datamodel.selectedTracks;
-
-  for(var i=0; i<tracks.length; i++){
-    var barHeight = 20;
-    var yPos = (i*(barHeight+2))+10;
-    var valence = tracks[i].features.valence;
-    var valenceWidth = map(valence,0,1,0,350);
-
-    fill("black")
-    text(tracks[i].name,0,yPos+2);
-    rect(100,yPos - (barHeight/2),350,20);
-    fill("#ffcc00");
-    rect(100,yPos - (barHeight/2),valenceWidth,20);
-    fill("black");
-    text("Valence: "+valence,100,yPos+2);
+  //if exploring all tracks
+  if(app.exploreState == "all"){
+    //loop through all selected tracks
+    for(var i=0; i<tracks.length; i++){
+      plotTrack(i);
+    }
   }
+
+  //if only viewing a single track
+  if(app.exploreState != "all"){
+    plotTrack(app.exploreState);
+  }
+
+  //create the grid
+  plotDimensions();
+
+  noLoop();
+}
+
+function plotDimensions(){
+  //plots for energy
+  var lineCol = color("#AAAAAA");
+  strokeWeight(1);
+  stroke(lineCol);
+  line(width/2,height/2,width,height/2);
+  fill(lineCol);
+  text("low",width/2,height/2);
+  text("medium",width/2+((width/2)/2),height/2);
+  text("high",width-30,height/2);
+}
+
+
+function plotTrack(trackIndex){
+
+  //setup the constraints
+  var maxCircleSize = 600;
+  var minCircleSize = 50;
+
+  //grab the values from the track object
+  var valence = tracks[trackIndex].features.valence;
+  var energy = tracks[trackIndex].features.energy;
+  var trackname = tracks[trackIndex].name;
+
+  //map the values if necessary
+  var circleWidth = map(valence,0,1,minCircleSize,maxCircleSize);
+  var colorChannel = map(energy,0,1,0,255);
+  var strokeSize = map(energy,.2,1,0.1,5);
+
+  //draw the circle
+  var col = color(colorChannel,0,0);
+  noFill();
+  stroke(col);
+  strokeWeight(strokeSize);
+  ellipse(width/2,height/2,circleWidth,circleWidth);
+  fill(col);
+  var textXPos = (width/2)-(textSize(trackname)/2);
+  var textYPos = (height/2)-(circleWidth/2)-5;
+  strokeWeight(1);
+  text(trackname + " (" +valence+ ")",textXPos,textYPos);
+
+}
 
   /*
   //Valence-dependent shape fluctuation:
@@ -67,7 +116,7 @@ function draw() {
   renderWave();
   */
 
-}
+//}
 
 /*
 function calculateWave() {

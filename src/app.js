@@ -9,7 +9,7 @@ var app = {
 
 app.initialize = function () {
   app.initLoader();
-  //app.showLoader();
+  // app.showLoader();
   app.setTabListeners();
   app.setFormListeners();
 
@@ -51,9 +51,9 @@ app.setTabListeners = function () {
         app.currentView = "searchandselect";
         app.hideLoader();
         break;
-      case "design-tab":
-        app.currentView = "design";
-        if (app.viewDesignTab() == false) {
+      case "explore-tab":
+        app.currentView = "explore";
+        if (app.viewExploreTab() == false) {
           return false;
         }
         break;
@@ -168,8 +168,8 @@ app.displaySelectedTracks = function () {
 }
 
 // This tab can only be opened if the user has successfully selected tracks in Step 1
-app.viewDesignTab = function () {
-  console.log("APP: viewDesignTab() called");
+app.viewExploreTab = function () {
+  console.log("APP: viewExploreTab() called");
 
   // Returns an error message if user has not selected any tracks
   if (datamodel.tracks.length < 1) {
@@ -198,23 +198,22 @@ app.displaySelectedTracklist = function () {
   html += '<ul class="list-unstyled">';
 
   // Display album artwork, track title, and artist for each track
-  for (var i=0; i < datamodel.selectedTracks.length; i++) {
-    html += '<li data-trackid="'+i+'" class="media select-track-btn list-group-item list-group-item-action">';
+  for (var i = 0; i < datamodel.selectedTracks.length; i++) {
+    html += '<li data-trackid="' + i + '" class="media select-track-btn list-group-item list-group-item-action">';
     html += '<img src="' + datamodel.selectedTracks[i].album.images[1].url + '" class="mr-3" height="32px" width="32px">';
     html += '<div class="media-body">';
     html += '<h5 class="mt-0 mb-1">' + datamodel.selectedTracks[i].name + '</h5>';
     html += datamodel.selectedTracks[i].artists[0].name;
     //html += 'Album: ' + datamodel.tracks[y].album.name; TODO: put this on a new line with gray text color
-    html += '<br><button data-trackid="'+i+'" class="play-track-btn">Preview</button>';
+    html += '<br><button data-trackid="' + i + '" class="play-track-btn">Preview</button>';
     html += '</div>';
     html += '</li>';
   }
   html += '</ul>';
 
-  //update html with tracks
   $("#track-list").html(html);
 
-  //update the canvas
+  // Update the p5 canvas
   draw();
 
   // Update click handler for music tracks
@@ -235,7 +234,7 @@ app.displaySelectedTracklist = function () {
     app.viewTrackFeaturesByIndex(selectedIndex);
   });
 
-  $("#explore-alltracks-btn").on("click", function(){
+  $("#explore-alltracks-btn").on("click", function () {
     app.exploreState = "all";
     draw();
   });
@@ -243,15 +242,14 @@ app.displaySelectedTracklist = function () {
 
 app.viewTrackFeaturesByIndex = function (index) {
   var selectedTrack = datamodel.selectedTracks[index];
-  var html = "<h5>Features for Track: <b>"+selectedTrack.name+"</b></h5>";
+  var html = "<h5>Features for Track: <b>" + selectedTrack.name + "</b></h5>";
   $.each(selectedTrack.features, function (key, value) {
     html += "<b>" + key + "</b>: " + value + "<br>";
   });
 
-  //update html
   $("#track-features").html(html);
 
-  //update canvas for single track view
+  // Update p5 canvas for single-track view
   app.exploreState = index;
   draw();
 };

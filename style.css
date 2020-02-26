@@ -23,7 +23,7 @@ hr {
   border-color: #f2f2f2;
 }
 
-.p5Canvas{
+.p5Canvas {
   border: 5px solid #d5d6d6;
 }
 
@@ -63,20 +63,21 @@ hr {
 .navbar {
   width: 100%;
 }
-.nav-tabs{
-  background-color: #f8f9fa;
-  font-family: 'Rajdhani', sans-serif;
+
+.nav-tabs {
+  font-family: 'Quicksand', sans-serif;
   font-weight: 400;
+  background-color: #f8f9fa;
 }
 
-.nav-link{
-  background-color: #f1f1f1;
+.nav-link {
   border: solid 1px #dae3e5 !important;
+  background-color: #f1f1f1;
 }
 
-.nav-link.active{
-  background-color: #dae3e5 !important;
+.nav-link.active {
   border: 0px;
+  background-color: #dae3e5 !important;
 }
 
 #logo {
@@ -88,23 +89,20 @@ hr {
   margin-top: 30px;
 }
 
-#search-field-old {
-  width: 250px;
-  height: 35px;
+.list-tracks {
+  margin-right: 10px;
+  padding: 10px 30px 20px 30px;
+  border: solid 1px #cccccc;
+  background: #d4dbdc;
 }
 
-.list-tracks{
-  border: solid 1px #cccccc;
-  padding: 10px 30px 20px 30px;
-  background: #d4dbdc;
-  margin-right: 10px;
-}
-.col{
+.col {
   overflow-wrap: break-word !important;
 }
 
-.panel-design{
-  /*border: solid 1px #cccccc;
+.panel-design {
+  /*
+  border: solid 1px #cccccc;
   background: #d4dbdc;
   */
 }
@@ -115,7 +113,7 @@ hr {
 
 #p5canvas {}
 
-#trackfeatures {
+#track-features {
   width: 250px;
   padding-left: 30px;
   float: left;

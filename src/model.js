@@ -56,7 +56,7 @@ datamodel.handleError = function (err) {
 };
 
 // Takes in the index of selected track from datamodel.tracks and appends the track to datamodel.selectedTracks
-datamodel.addTrackFromSearch = function(trackIndex, callback) {
+datamodel.addTrackFromSearch = function (trackIndex, callback) {
   var tempObj = datamodel.tracks[trackIndex];
   if (tempObj == null) {
     console.log("MODEL: addTrackFromSearch() ERROR CANNOT FIND INDEX: " + trackIndex);
@@ -68,13 +68,13 @@ datamodel.addTrackFromSearch = function(trackIndex, callback) {
 };
 
 // Takes in the index of selected track from datamodel.selectedTracks and removes it from the array
-datamodel.removeSelectedTrack = function(trackIndex,callback){
+datamodel.removeSelectedTrack = function (trackIndex, callback) {
   var tempObj = datamodel.selectedTracks[trackIndex];
-  if (tempObj == null){
+  if (tempObj == null) {
     console.log("MODEL: removeSelectedTrack() ERROR CANNOT FIND INDEX: " + trackIndex);
   } else {
     console.log("MODEL: removeSelectedTrack() trackindex: " + trackIndex);
-    datamodel.selectedTracks.splice(trackIndex,1);
+    datamodel.selectedTracks.splice(trackIndex, 1);
     callback();
   }
 };
@@ -85,7 +85,7 @@ datamodel.searchTracks = function (searchTerm, callback) {
     return null;
   }
 
-  spotifyApi.searchTracks(searchTerm).then (
+  spotifyApi.searchTracks(searchTerm).then(
     function (data) {
       console.log('MODEL: Search by "' + searchTerm + '"', data);
       datamodel.searchData = data;
@@ -108,7 +108,9 @@ datamodel.searchSelectedTrack = function (searchTerm, callback) {
     return null;
   }
 
-  spotifyApi.searchTracks(searchTerm, {limit: 1}).then (
+  spotifyApi.searchTracks(searchTerm, {
+    limit: 1
+  }).then(
     function (data) {
       console.log('MODEL: Search by "' + searchTerm + '"', data);
       datamodel.searchData = data;

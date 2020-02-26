@@ -61,11 +61,11 @@
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" href="#searchandselect" data-toggle="tab" role="tab"
-          aria-controls="nav-searchandselect" aria-selected="true" id="searchandselect-tab">Step 1: Select</a>
-      <a class="nav-item nav-link" href="#design" data-toggle="tab" role="tab" aria-controls="nav-design"
-          aria-selected="false" id="design-tab">Step 2: Explore</a>
+        aria-controls="nav-searchandselect" aria-selected="true" id="searchandselect-tab">Step 1: Select</a>
+      <a class="nav-item nav-link" href="#explore" data-toggle="tab" role="tab" aria-controls="nav-explore"
+        aria-selected="false" id="explore-tab">Step 2: Explore</a>
       <a class="nav-item nav-link" href="#publish" data-toggle="tab" role="tab" aria-controls="nav-publish"
-          aria-selected="false" id="publish-tab">Step 3: Publish</a>
+        aria-selected="false" id="publish-tab">Step 3: Publish</a>
     </div>
   </nav>
 
@@ -81,7 +81,8 @@
       id="searchandselect">
       <div class="btn-toolbar mb-3" role="toolbar">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="song title or artist" id="search-field"aria-label="Artist/Song Search" aria-describedby="search-btn">
+          <input type="text" class="form-control" placeholder="song title or artist" id="search-field"
+            aria-label="Artist/Song Search" aria-describedby="search-btn">
           <div class="input-group-append">
             <div class="button input-group-text" id="search-btn">Search</div>
           </div>
@@ -100,22 +101,19 @@
         </div>
       </div>
     </div>
-    <!-- Step 2: Listen -->
+    <!-- Step 2: Explore -->
     <!--
-      At step 2, the user can customize how their selected tracks will be visualized and
-      what kind of audio feature data they would like to see. The user can choose either a circle
-      or a square to represent each track, and either energy, danceability, or valence as the audio
-      feature. The color chosen will represent each track's audio feature data in hues.
+      TODO: Insert description
     -->
-    <div class="tab-pane fade" role="tabpanel" aria-labelledby="design" id="design">
+    <div class="tab-pane fade" role="tabpanel" aria-labelledby="explore" id="explore">
       <div class="row">
         <div class="col-2" id="sidemenu">
           <div class="col panel-design" id="track-list">
-            
+
           </div>
         </div>
         <div class="panel-design" id="p5canvas">
-          
+
         </div>
         <div class="col-3 panel-design" id="track-features">
           Click on an individual track to display features

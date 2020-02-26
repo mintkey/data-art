@@ -15,7 +15,7 @@ function setup() {
   ellipseMode(CENTER);
 }
 
-//create a reference to list of selected tracks
+// Create a reference to the list of selected tracks
 var tracks = datamodel.selectedTracks;
 
 function draw() {
@@ -26,95 +26,93 @@ function draw() {
     return;
   }
 
-  //if exploring all tracks
-  if(app.exploreState == "all"){
-    //loop through all selected tracks
-    for(var i=0; i<tracks.length; i++){
+  // If exploring all tracks, loop through all selected tracks to plot
+  if (app.exploreState == "all") {
+    for (var i = 0; i < tracks.length; i++) {
       plotTrack(i);
     }
   }
 
-  //if only viewing a single track
-  if(app.exploreState != "all"){
+  // If only viewing a single track, plot only the selected track
+  if (app.exploreState != "all") {
     plotTrack(app.exploreState);
   }
 
-  //create the grid
+  // Create the grid
   plotDimensions();
 
   noLoop();
 }
 
-function plotDimensions(){
-  //plots for energy
+function plotDimensions() {
+  // Plots for energy
   var lineCol = color("#AAAAAA");
   strokeWeight(1);
   stroke(lineCol);
-  line(width/2,height/2,width,height/2);
+  line(width / 2, height / 2, width, height / 2);
   fill(lineCol);
-  text("low",width/2,height/2);
-  text("medium",width/2+((width/2)/2),height/2);
-  text("high",width-30,height/2);
+  text("low", width / 2, height / 2);
+  text("medium", width / 2 + ((width / 2) / 2), height / 2);
+  text("high", width - 30, height / 2);
 }
 
 
-function plotTrack(trackIndex){
+function plotTrack(trackIndex) {
 
-  //setup the constraints
+  // Constraints for circumference
   var maxCircleSize = 600;
   var minCircleSize = 50;
 
-  //grab the values from the track object
   var valence = tracks[trackIndex].features.valence;
   var energy = tracks[trackIndex].features.energy;
   var trackname = tracks[trackIndex].name;
 
-  //map the values if necessary
-  var circleWidth = map(valence,0,1,minCircleSize,maxCircleSize);
-  var colorChannel = map(energy,0,1,0,255);
-  var strokeSize = map(energy,.2,1,0.1,5);
+  // Map values if necessary
+  var circleWidth = map(valence, 0, 1, minCircleSize, maxCircleSize);
+  var colorChannel = map(energy, 0, 1, 0, 255);
+  var strokeSize = map(energy, .2, 1, 0.1, 5);
 
-  //draw the circle
-  var col = color(colorChannel,0,0);
+  // Draw track circle
+  var col = color(colorChannel, 0, 0);
   noFill();
   stroke(col);
   strokeWeight(strokeSize);
-  ellipse(width/2,height/2,circleWidth,circleWidth);
+  ellipse(width / 2, height / 2, circleWidth, circleWidth);
   fill(col);
-  var textXPos = (width/2)-(textSize(trackname)/2);
-  var textYPos = (height/2)-(circleWidth/2)-5;
+  var textXPos = (width / 2) - (textSize(trackname) / 2);
+  var textYPos = (height / 2) - (circleWidth / 2) - 5;
   strokeWeight(1);
-  text(trackname + " (" +valence+ ")",textXPos,textYPos);
+  text(trackname + " (" + valence + ")", textXPos, textYPos);
 
 }
 
-  /*
-  //Valence-dependent shape fluctuation:
-  //Higher valence means really small to really large, lower valence means
-  //slightly small to slightly large
+/*
+//Valence-dependent shape fluctuation:
+//Higher valence means really small to really large, lower valence means
+//slightly small to slightly large
 
-  isSetup = true;
-  if (model.track == null) {
-    $.each(model.track.features, function (key, value) {
-      if (key == "valence") {
-        maxDiameter += value;
-      }
-    });
-    w = width + 20;
-    dx = (TWO_PI / period) * xspacing;
-    yvalues = new Array(floor(w / xspacing));
-    // Time signature-dependent period
-    $.each(model.track.features, function (key, value) {
-      if (key == "time_signature") {
-        period *= value;
-      }
-    });
-  }
+isSetup = true;
+if (model.track == null) {
+  $.each(model.track.features, function (key, value) {
+    if (key == "valence") {
+      maxDiameter += value;
+    }
+  });
+  w = width + 20;
+  dx = (TWO_PI / period) * xspacing;
+  yvalues = new Array(floor(w / xspacing));
+  // Time signature-dependent period
+  $.each(model.track.features, function (key, value) {
+    if (key == "time_signature") {
+      period *= value;
+    }
+  });
+}
 
-  coloring();
-  calculateWave();
-  renderWave();
-  */
+coloring();
+calculateWave();
+renderWave();
+*/
 
 //}
 
